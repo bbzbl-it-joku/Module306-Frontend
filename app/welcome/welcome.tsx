@@ -1,9 +1,8 @@
 import * as React from "react";
 import { Link } from "react-router";
+import { Navigation } from "../navigation/navigation";
 
 export function Welcome() {
-  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-800 relative overflow-hidden">
       {/* Floating Background Shapes */}
@@ -13,89 +12,8 @@ export function Welcome() {
         <div className="absolute bottom-1/4 left-1/3 w-24 h-24 bg-white/10 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
       </div>
 
-      {/* Header Navigation */}
-      <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-white/10 border-b border-white/20">
-        <nav className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            {/* Logo */}
-            <Link
-              to="/"
-              className="text-2xl font-bold text-white tracking-tight hover:scale-105 transition-transform duration-200"
-            >
-              Trackify
-            </Link>
-
-            {/* Desktop Navigation Links */}
-            <div className="hidden md:flex items-center space-x-8">
-              <Link
-                to="/dashboard"
-                className="text-white/90 hover:text-white font-medium transition-all duration-200 hover:-translate-y-0.5 relative group"
-              >
-                Dashboard
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
-              </Link>
-              <Link
-                to="/kanban"
-                className="text-white/90 hover:text-white font-medium transition-all duration-200 hover:-translate-y-0.5 relative group"
-              >
-                Kanban Board
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
-              </Link>
-              <Link
-                to="/tickets"
-                className="text-white/90 hover:text-white font-medium transition-all duration-200 hover:-translate-y-0.5 relative group"
-              >
-                All Tickets
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
-              </Link>
-            </div>
-
-            {/* Mobile Menu Button */}
-            <button 
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden text-white p-2 hover:bg-white/10 rounded-lg transition-colors duration-200"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth={2} 
-                  d={mobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} 
-                />
-              </svg>
-            </button>
-          </div>
-
-          {/* Mobile Menu */}
-          {mobileMenuOpen && (
-            <div className="md:hidden mt-4 pb-4 border-t border-white/20">
-              <div className="flex flex-col space-y-4 pt-4">
-                <Link 
-                  to="/dashboard" 
-                  className="text-white/90 hover:text-white font-medium transition-colors duration-200"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Dashboard
-                </Link>
-                <Link 
-                  to="/kanban" 
-                  className="text-white/90 hover:text-white font-medium transition-colors duration-200"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Kanban Board
-                </Link>
-                <Link 
-                  to="/tickets" 
-                  className="text-white/90 hover:text-white font-medium transition-colors duration-200"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  All Tickets
-                </Link>
-              </div>
-            </div>
-          )}
-        </nav>
-      </header>
+      {/* Navigation Header */}
+      <Navigation currentPath="/" />
 
       {/* Main Welcome Section */}
       <main className="pt-20 min-h-screen flex items-center justify-center px-6">
