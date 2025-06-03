@@ -13,7 +13,6 @@ export function Navigation({ currentPath }: NavigationProps) {
   const navigationItems = [
     { name: 'Dashboard', path: '/dashboard' },
     { name: 'Kanban Board', path: '/kanban' },
-    { name: 'All Tickets', path: '/tickets' }
   ];
 
   const isActivePath = (path: string) => currentPath === path;

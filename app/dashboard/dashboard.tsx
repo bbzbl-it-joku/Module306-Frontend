@@ -5,6 +5,8 @@ import { TicketList } from './TicketList';
 import { Navigation } from '../navigation/navigation';
 import { mockTickets } from '../types/ticket';
 import type { Ticket, TicketStats } from '../types/ticket';
+import { Navigate } from 'react-router';
+import { useNavigate } from 'react-router';
 
 export function Dashboard() {
   // Calculate ticket statistics from mock data
@@ -51,12 +53,12 @@ export function Dashboard() {
     
     return stats;
   }, []);
-
+  const navigate = useNavigate();
   // Handle ticket click navigation
   const handleTicketClick = (ticketId: string) => {
     // TODO: Navigate to ticket detail page
     console.log(`Navigate to ticket: ${ticketId}`);
-    // Example: navigate(`/tickets/${ticketId}`);
+    navigate(`/ticket/${ticketId}`);
   };
 
   return (
