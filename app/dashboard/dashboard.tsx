@@ -1,5 +1,5 @@
 // components/dashboard/Dashboard.tsx
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StatsOverview } from './StatsOverview';
 import { TicketList } from './TicketList';
 import { Navigation } from '../navigation/navigation';
@@ -59,6 +59,20 @@ export function Dashboard() {
     console.log(`Navigate to ticket: ${ticketId}`);
     navigate(`/ticket/${ticketId}`);
   };
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
+
+  const filteredTickets = useMemo(() => {
+    if (!activeFilter) {
+      return mockTickets; // Show all tickets when no filter is active
+    }
+    
+    return mockTickets.filter(ticket => ticket.status === activeFilter);
+  }, [activeFilter]);
+  
+
+    const handleFilterChange = (filter: string | null) => {
+    setActiveFilter(filter);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-800 relative overflow-hidden">
@@ -88,11 +102,11 @@ export function Dashboard() {
       {/* Main Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats Overview */}
-        <StatsOverview stats={ticketStats} />
+        <StatsOverview stats={ticketStats} activeFilter={activeFilter} onFilterChange={handleFilterChange}/>
         
         {/* Ticket List */}
         <TicketList 
-          tickets={mockTickets} 
+          tickets={filteredTickets} 
           onTicketClick={handleTicketClick}
         />
       </div>
@@ -104,3 +118,5 @@ export function Dashboard() {
 export { StatsOverview } from './StatsOverview';
 export { TicketList } from './TicketList';
 export { TicketCard } from './TicketCard';
+
+
