@@ -1,19 +1,20 @@
 {
-  "include": [
+   "include": [
     "**/*",
     "**/.server/**/*",
     "**/.client/**/*",
     ".react-router/types/**/*",
-    "src",
-    "vite.config.ts",
-    "vite-env.d.ts",
+    "app",
+    "app/**/*",
     "app/**/*.ts",
     "app/**/*.tsx",
     "app/**/*.js",
+    "app/**/*.jsx",
+    "vite.config.ts",
+    "vite-env.d.ts",
     "react-router/**/*.ts",
     "react-router/**/*.tsx",
-    "react-router/**/*.js",
-    
+    "react-router/**/*.js"
   ],
   "compilerOptions": {
     "lib": [

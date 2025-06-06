@@ -60,6 +60,7 @@ export function AttachmentList({ attachments }: AttachmentListProps) {
     return url.split('/').pop() || 'Unknown file';
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const getFileSize = (url: string) => {
     // In a real app, this would come from the attachment metadata
     // For now, return a mock size

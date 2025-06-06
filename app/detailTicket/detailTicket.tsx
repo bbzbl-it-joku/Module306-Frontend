@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // components/ticket/TicketDetail.tsx
 import React, { useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router';
@@ -5,7 +6,6 @@ import { mockTickets, STATUS_COLORS, PRIORITY_COLORS } from '../types/ticket';
 import { CommentList } from './commentList';
 import { CommentForm } from './commentForm';
 import { AttachmentList } from './attachmentList';
-import type { Ticket,  } from '../types/ticket';
 import type { Comment, Attachment, AttachmentLinkType } from '~/types';
 
 // Mock comments data
@@ -107,7 +107,7 @@ export function TicketDetail() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Ticket Not Found</h1>
-          <p className="text-gray-600 mb-6">The ticket you're looking for doesn't exist.</p>
+          <p className="text-gray-600 mb-6">The ticket you&apos;re looking for doesn&apos;t exist.</p>
           <button
             onClick={() => navigate('/dashboard')}
             className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"

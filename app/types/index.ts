@@ -1,10 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // types/index.ts
 
 import type { ApiErrorResponse, PaginatedResponse } from './api';
 import type { Attachment } from './attachment';
 import { AttachmentLinkType, CommonMimeType, TicketPriority, TicketStatus } from './common';
 import type { Ticket } from './ticket';
-import type { Comment as TrackifyComment } from './comment';
 
 // ============================================
 // COMMON TYPES AND ENUMS

@@ -1,7 +1,7 @@
-import type { Route } from "./+types/dashboard";
+import React from "react";
 import { Dashboard } from "../dashboard/dashboard";
 
-export function meta({}: Route.MetaArgs) {
+export function meta() {
   return [
     { title: "Dashboard - Trackify" },
     { name: "description", content: "Project overview and ticket management dashboard" },

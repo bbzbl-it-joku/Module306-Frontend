@@ -60,7 +60,7 @@ export function StatsOverview({ stats }: StatsOverviewProps) {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-      {statCards.map((card, index) => (
+      {statCards.map((card) => (
         <div 
           key={card.title}
           className="group relative backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl hover:bg-white/20 transition-all duration-300 hover:scale-105 hover:-translate-y-1 p-6 cursor-pointer overflow-hidden"

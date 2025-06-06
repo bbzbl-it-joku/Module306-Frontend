@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // types/api.ts
 
 import type {
@@ -229,14 +230,14 @@ export interface BulkTicketOperationRequest {
 /**
  * Bulk operation response
  */
-export interface BulkOperationResponse extends ApiResponse<{
+export type BulkOperationResponse = ApiResponse<{
   successCount: number;
   failureCount: number;
   failures?: Array<{
     id: EntityId;
     error: string;
   }>;
-}> {}
+}>;
 
 // ============================================
 // SEARCH AND AUTOCOMPLETE

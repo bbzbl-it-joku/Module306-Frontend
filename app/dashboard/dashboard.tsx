@@ -4,8 +4,7 @@ import { StatsOverview } from './StatsOverview';
 import { TicketList } from './TicketList';
 import { Navigation } from '../navigation/navigation';
 import { mockTickets } from '../types/ticket';
-import type { Ticket, TicketStats } from '../types/ticket';
-import { Navigate } from 'react-router';
+import type { TicketStats } from '../types/ticket';
 import { useNavigate } from 'react-router';
 
 export function Dashboard() {
