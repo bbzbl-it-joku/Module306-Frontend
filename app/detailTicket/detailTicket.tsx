@@ -82,17 +82,10 @@ export function TicketDetail() {
     }).format(new Date(dateString));
   };
 
-  const handleAddComment = (content: string) => {
+  const handleAddComment = (content: Comment) => {
     if (!id) return;
     
-    const newComment: Comment = {
-      id: `comment-${Date.now()}`,
-      content,
-      createdBy: 'current.user@company.com', // In real app, get from auth context
-      createdAt: new Date().toISOString(),
-      modifiedAt: new Date().toISOString(),
-      ticketId: id
-    };
+    const newComment: Comment = content;
     
     setComments(prev => [...prev, newComment]);
   };
@@ -189,7 +182,7 @@ export function TicketDetail() {
                 Comments ({ticketComments.length})
               </h2>
               
-              <CommentForm onSubmit={handleAddComment} />
+              <CommentForm onSubmit={handleAddComment} ticketID={ticket.id} />
               
               <div className="mt-6">
                 <CommentList comments={ticketComments} />
