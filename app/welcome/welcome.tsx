@@ -59,16 +59,16 @@ export function Welcome() {
 
           {/* Feature Stats */}
           <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
-            <div className="text-center group cursor-pointer">
-              <div className="text-3xl md:text-4xl font-bold text-white mb-2 group-hover:scale-110 transition-transform duration-200">
+            <div className="text-center group ">
+              <div className="text-3xl md:text-4xl font-bold text-white mb-2   transition-transform duration-200">
                 <svg className="w-12 h-12 mx-auto mb-2" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
                 </svg>
               </div>
               <div className="text-white/80 text-sm md:text-base">Project Analytics</div>
             </div>
-            <div className="text-center group cursor-pointer">
-              <div className="text-3xl md:text-4xl font-bold text-white mb-2 group-hover:scale-110 transition-transform duration-200">
+            <div className="text-center group ">
+              <div className="text-3xl md:text-4xl font-bold text-white mb-2   transition-transform duration-200">
                 <svg className="w-12 h-12 mx-auto mb-2" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zM4 18v-6h2.5l1.5 6H4zm18.5-3c.28 0 .5.22.5.5s-.22.5-.5.5-.5-.22-.5-.5.22-.5.5-.5z"/>
                   <path d="M12.5 11H11V9.5c0-.28-.22-.5-.5-.5s-.5.22-.5.5V11H8.5c-.28 0-.5.22-.5.5s.22.5.5.5H10v1.5c0 .28.22.5.5.5s.5-.22.5-.5V12h1.5c.28 0 .5-.22.5-.5s-.22-.5-.5-.5z"/>
@@ -76,8 +76,8 @@ export function Welcome() {
               </div>
               <div className="text-white/80 text-sm md:text-base">Team Collaboration</div>
             </div>
-            <div className="text-center group cursor-pointer">
-              <div className="text-3xl md:text-4xl font-bold text-white mb-2 group-hover:scale-110 transition-transform duration-200">
+            <div className="text-center group ">
+              <div className="text-3xl md:text-4xl font-bold text-white mb-2   transition-transform duration-200">
                 <svg className="w-12 h-12 mx-auto mb-2" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
                 </svg>

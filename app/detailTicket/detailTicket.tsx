@@ -7,6 +7,7 @@ import { CommentList } from './commentList';
 import { CommentForm } from './commentForm';
 import { AttachmentList } from './attachmentList';
 import type { Comment, Attachment, AttachmentLinkType } from '~/types';
+import { Navigation } from '~/navigation/navigation';
 
 // Mock comments data
 const mockComments: Comment[] = [
@@ -115,7 +116,11 @@ export function TicketDetail() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-800 relative overflow-hidden">
       {/* Header */}
-      <div className="backdrop-blur-md bg-white/5 border-b border-white/10 shadow-sm border-b">
+
+      <Navigation/>
+
+
+      <div className="relative z-10 pt-20 pb-8 backdrop-blur-md bg-white/5 border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="py-6">
             <div className="flex items-center justify-between">

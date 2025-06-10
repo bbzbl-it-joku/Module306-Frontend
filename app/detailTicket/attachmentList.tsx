@@ -1,13 +1,17 @@
 // components/ticket/AttachmentList.tsx
-import React from 'react';
+import React, { useRef } from 'react';
 import type { Attachment } from '../types/attachment';
 
 interface AttachmentListProps {
   attachments: Attachment[];
+  onAddAttachment?: (file: File) => void;
+  onRemoveAttachment?: (id: string) => void;
 }
 
-export function AttachmentList({ attachments }: AttachmentListProps) {
-  const getFileIcon = (mimeType: string) => {
+export function AttachmentList({ attachments, onAddAttachment, onRemoveAttachment }: AttachmentListProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  
+ const getFileIcon = (mimeType: string) => {
     if (mimeType.startsWith('image/')) {
       return (
         <svg className="w-8 h-8 text-green-500" fill="currentColor" viewBox="0 0 24 24">
@@ -54,7 +58,7 @@ export function AttachmentList({ attachments }: AttachmentListProps) {
         <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
       </svg>
     );
-  };
+  };;
 
   const getFileName = (url: string) => {
     return url.split('/').pop() || 'Unknown file';
@@ -80,6 +84,23 @@ export function AttachmentList({ attachments }: AttachmentListProps) {
       window.open(attachment.url, '_blank');
     }
   };
+  
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && onAddAttachment) {
+      onAddAttachment(file);
+      // Reset the file input so the same file can be selected again if needed
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
+  
+  const handleRemove = (id: string) => {
+    if (onRemoveAttachment) {
+      onRemoveAttachment(id);
+    }
+  };
 
   if (attachments.length === 0) {
     return (
@@ -88,9 +109,16 @@ export function AttachmentList({ attachments }: AttachmentListProps) {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
         </svg>
         <p className="text-sm text-gray-500">No attachments</p>
-        <button className="mt-2 text-xs text-blue-600 hover:text-blue-700">
+        <label htmlFor="attachment-upload" className="mt-2 text-xs text-blue-600 hover:text-blue-700 cursor-pointer">
           Add attachment
-        </button>
+        </label>
+        <input 
+          type="file" 
+          id="attachment-upload" 
+          ref={fileInputRef}
+          className="hidden" 
+          onChange={handleFileChange} 
+        />
       </div>
     );
   }
@@ -143,6 +171,7 @@ export function AttachmentList({ attachments }: AttachmentListProps) {
             </button>
             
             <button
+              onClick={() => handleRemove(attachment.id)}
               className="text-gray-400 hover:text-red-600 p-1 rounded transition-colors"
               title="Remove"
             >
@@ -154,15 +183,27 @@ export function AttachmentList({ attachments }: AttachmentListProps) {
         </div>
       ))}
       
-      {/* Add Attachment Button */}
-      <button className="w-full p-3 border-2 border-dashed border-gray-300 rounded-lg text-center text-gray-500 hover:border-gray-400 hover:text-gray-600 transition-colors group">
-        <div className="flex items-center justify-center space-x-2">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-          </svg>
-          <span className="text-sm font-medium">Add attachment</span>
-        </div>
-      </button>
+      {/* Add Attachment Button with Hidden File Input */}
+      <div className="relative">
+        <label 
+          htmlFor="attachment-upload-list" 
+          className="block w-full p-3 border-2 border-dashed border-gray-300 rounded-lg text-center text-gray-500 hover:border-gray-400 hover:text-gray-600 transition-colors group cursor-pointer"
+        >
+          <div className="flex items-center justify-center space-x-2">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+            <span className="text-sm font-medium">Add attachment</span>
+          </div>
+          <input 
+            type="file" 
+            id="attachment-upload-list" 
+            ref={fileInputRef}
+            className="hidden" 
+            onChange={handleFileChange} 
+          />
+        </label>
+      </div>
     </div>
   );
 }
