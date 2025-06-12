@@ -49,6 +49,18 @@ export function StatsOverview({ stats, activeFilter, onFilterChange }: StatsOver
       bgColor: 'bg-yellow-500/20',
       textColor: 'text-yellow-200',
       iconBg: 'bg-yellow-500/30'
+    },{
+      title: "Resolved Tickets",
+      value: stats.resolved,
+      filter: TicketStatus.RESOLVED,
+      icon: (
+        <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15l-5-5 1.41-1.41L11 14.17l7.59-7.59L20 8l-9 9z"/>
+        </svg>
+      ),
+      bgColor: 'bg-blue-500/20',
+      textColor: 'text-blue-200',
+      iconBg: 'bg-blue-500/30'
     },
     {
       title: 'Closed Tickets',
@@ -70,7 +82,7 @@ export function StatsOverview({ stats, activeFilter, onFilterChange }: StatsOver
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 w-full mb-8">
       {statCards.map((card) => {
         const isActive = activeFilter === card.filter;
         

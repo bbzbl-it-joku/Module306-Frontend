@@ -102,12 +102,12 @@ export function TicketDetail() {
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Ticket Not Found</h1>
           <p className="text-gray-600 mb-6">The ticket you&apos;re looking for doesn&apos;t exist.</p>
-          <button
-            onClick={() => navigate('/dashboard')}
+            <button
+            onClick={() => navigate(-1)}
             className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            Back to Dashboard
-          </button>
+            >
+            Back
+            </button>
         </div>
       </div>
     );
@@ -126,7 +126,7 @@ export function TicketDetail() {
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
                 <button
-                  onClick={() => navigate('/dashboard')}
+                  onClick={() => navigate(-1)}
                   className="text-white-500 hover:text-gray-700 transition-colors"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
