@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router';
 import { Navigation } from '~/navigation/navigation';
-
 
 // Types and constants (matching your existing structure)
 const TicketStatus = {
@@ -42,6 +42,27 @@ const PRIORITY_COLORS = {
   }
 };
 
+// File validation constants (from your attachment.ts)
+const FILE_UPLOAD_VALIDATION = {
+  maxFileSize: 10 * 1024 * 1024, // 10MB
+  maxFilesPerUpload: 5,
+  allowedMimeTypes: [
+    'image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml',
+    'application/pdf', 'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'text/plain', 'text/csv', 'application/json', 'application/xml',
+    'application/zip', 'application/x-rar-compressed'
+  ],
+  allowedExtensions: [
+    '.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg',
+    '.pdf', '.doc', '.docx', '.xls', '.xlsx',
+    '.txt', '.csv', '.json', '.xml',
+    '.zip', '.rar'
+  ]
+} as const;
+
 // Types for form data and errors
 type FormData = {
   title: string;
@@ -53,38 +74,100 @@ type FormData = {
   tags: string[];
 };
 
-type FormErrors = Partial<Record<keyof FormData, string>> & { submit?: string };
+type AttachedFile = {
+  id: string;
+  file: File;
+  preview?: string;
+  error?: string;
+};
+
+type FormErrors = Partial<Record<keyof FormData, string>> & {
+  submit?: string;
+  files?: string;
+};
+
+// File validation functions
+const validateFileUpload = (file: File): { valid: boolean; error?: string } => {
+  if (file.size > FILE_UPLOAD_VALIDATION.maxFileSize) {
+    return {
+      valid: false,
+      error: `File size exceeds maximum allowed size of ${FILE_UPLOAD_VALIDATION.maxFileSize / (1024 * 1024)}MB`
+    };
+  }
+
+  if (!FILE_UPLOAD_VALIDATION.allowedMimeTypes.includes(file.type as typeof FILE_UPLOAD_VALIDATION.allowedMimeTypes[number])) {
+    return {
+      valid: false,
+      error: `File type ${file.type} is not allowed`
+    };
+  }
+
+  const extension = getFileExtension(file.name).toLowerCase();
+  if (!FILE_UPLOAD_VALIDATION.allowedExtensions.includes(extension as typeof FILE_UPLOAD_VALIDATION.allowedExtensions[number])) {
+    return {
+      valid: false,
+      error: `File extension ${extension} is not allowed`
+    };
+  }
+
+  return { valid: true };
+};
+
+const getFileExtension = (filename: string): string => {
+  const lastDotIndex = filename.lastIndexOf('.');
+  return lastDotIndex >= 0 ? filename.slice(lastDotIndex) : '';
+};
+
+const formatFileSize = (bytes: number): string => {
+  if (bytes === 0) return '0 Bytes';
+
+  const k = 1024;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+};
+
+const getFileIcon = (mimeType: string): string => {
+  if (mimeType.startsWith('image/')) return '🖼️';
+  if (mimeType === 'application/pdf') return '📄';
+  if (mimeType.includes('word')) return '📝';
+  if (mimeType.includes('excel') || mimeType.includes('spreadsheet')) return '📊';
+  if (mimeType.includes('zip') || mimeType.includes('rar')) return '🗜️';
+  if (mimeType.startsWith('text/')) return '📃';
+  return '📎';
+};
 
 // Form validation
 const validateForm = (formData: FormData): FormErrors => {
   const errors: FormErrors = {};
-  
+
   if (!formData.title.trim()) {
     errors.title = 'Title is required';
   } else if (formData.title.length < 3) {
     errors.title = 'Title must be at least 3 characters';
   }
-  
+
   if (!formData.description.trim()) {
     errors.description = 'Description is required';
   } else if (formData.description.length < 10) {
     errors.description = 'Description must be at least 10 characters';
   }
-  
+
   if (formData.assignedTo && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.assignedTo)) {
     errors.assignedTo = 'Please enter a valid email address';
   }
-  
+
   if (formData.dueDate) {
     const dueDate = new Date(formData.dueDate);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    
+
     if (dueDate < today) {
       errors.dueDate = 'Due date cannot be in the past';
     }
   }
-  
+
   return errors;
 };
 
@@ -96,12 +179,12 @@ const generateTicketId = () => {
 };
 
 type CreateTicketProps = {
-  onSubmit?: (ticket: any) => Promise<void> | void;
-  onCancel?: () => void;
   isModal?: boolean;
+  onSubmit?: (ticket: any, files: File[]) => void;
+  onCancel?: () => void;
 };
 
-export default function CreateTicket({ onSubmit, onCancel, isModal = false }: CreateTicketProps) {
+export default function CreateTicket({ isModal = false, onSubmit, onCancel }: CreateTicketProps) {
   // Form state
   const [formData, setFormData] = useState<FormData>({
     title: '',
@@ -118,13 +201,17 @@ export default function CreateTicket({ onSubmit, onCancel, isModal = false }: Cr
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // File attachment state
+  const [attachedFiles, setAttachedFiles] = useState<AttachedFile[]>([]);
+  const [isDragOver, setIsDragOver] = useState(false);
+
   // Handle input changes
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
     }));
-    
+
     // Clear error for this field when user starts typing
     if (errors[field]) {
       setErrors(prev => ({
@@ -153,17 +240,107 @@ export default function CreateTicket({ onSubmit, onCancel, isModal = false }: Cr
     }));
   };
 
+  // File handling functions
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files || []);
+    addFiles(files);
+    // Reset input value to allow selecting the same file again
+    event.target.value = '';
+  };
+
+  const addFiles = (files: File[]) => {
+    // Check total file count
+    if (attachedFiles.length + files.length > FILE_UPLOAD_VALIDATION.maxFilesPerUpload) {
+      setErrors(prev => ({
+        ...prev,
+        files: `Maximum ${FILE_UPLOAD_VALIDATION.maxFilesPerUpload} files allowed`
+      }));
+      return;
+    }
+
+    const newFiles: AttachedFile[] = [];
+
+    files.forEach(file => {
+      // Check if file already exists
+      const exists = attachedFiles.some(f => f.file.name === file.name && f.file.size === file.size);
+      if (exists) return;
+
+      // Validate file
+      const validation = validateFileUpload(file);
+      const attachedFile: AttachedFile = {
+        id: Math.random().toString(36).substr(2, 9),
+        file, 
+        error: validation.valid ? undefined : validation.error
+      };
+
+      // Create preview for images
+      if (file.type.startsWith('image/') && validation.valid) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setAttachedFiles(prev =>
+            prev.map(f =>
+              f.id === attachedFile.id
+                ? { ...f, preview: e.target?.result as string }
+                : f
+            )
+          );
+        };
+        reader.readAsDataURL(file);
+      }
+
+      newFiles.push(attachedFile);
+    });
+
+    setAttachedFiles(prev => [...prev, ...newFiles]);
+
+    // Clear file errors if we successfully added files
+    if (newFiles.length > 0) {
+      setErrors(prev => ({ ...prev, files: '' }));
+    }
+  };
+
+  const removeFile = (fileId: string) => {
+    setAttachedFiles(prev => prev.filter(f => f.id !== fileId));
+  };
+
+  // Drag and drop handlers
+  const handleDragOver = (event: React.DragEvent) => {
+    event.preventDefault();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = (event: React.DragEvent) => {
+    event.preventDefault();
+    setIsDragOver(false);
+  };
+
+  const handleDrop = (event: React.DragEvent) => {
+    event.preventDefault();
+    setIsDragOver(false);
+
+    const files = Array.from(event.dataTransfer.files);
+    addFiles(files);
+  };
+
+  const navigate = useNavigate()
   // Handle form submission
   const handleSubmit = async () => {
     // Validate form
     const validationErrors = validateForm(formData);
+
+    // Check for file errors
+    const fileErrors = attachedFiles.filter(f => f.error);
+    if (fileErrors.length > 0) {
+      validationErrors.files = 'Please remove invalid files before submitting';
+    }
+
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
 
     setIsSubmitting(true);
-    
+
     try {
       // Create new ticket object
       const now = new Date().toISOString();
@@ -176,17 +353,21 @@ export default function CreateTicket({ onSubmit, onCancel, isModal = false }: Cr
         assignedTo: formData.assignedTo.trim() || undefined,
         dueDate: formData.dueDate || undefined,
         tags: formData.tags,
-        createdBy: 'current.user@company.com', // In real app, get from auth context
+        createdBy: ' current.user@company.com',
         createdAt: now,
         modifiedBy: 'current.user@company.com',
         modifiedAt: now
       };
 
-      // Call parent submit handler
-      if (onSubmit) {
-        await onSubmit(newTicket);
-      }
+      // Get valid files
+      const validFiles = attachedFiles.filter(f => !f.error).map(f => f.file);
 
+      // Call parent submit handler with ticket and files
+      if (onSubmit) {
+        await onSubmit(newTicket, validFiles);
+      } // actaul submission logic would go here, e.g. API call
+
+      navigate(-1)
       // Reset form on success
       setFormData({
         title: '',
@@ -197,8 +378,9 @@ export default function CreateTicket({ onSubmit, onCancel, isModal = false }: Cr
         dueDate: '',
         tags: []
       });
+      setAttachedFiles([]);
       setErrors({});
-      
+
     } catch (error) {
       console.error('Error creating ticket:', error);
       setErrors({ submit: 'Failed to create ticket. Please try again.' });
@@ -209,9 +391,18 @@ export default function CreateTicket({ onSubmit, onCancel, isModal = false }: Cr
 
   // Handle cancel
   const handleCancel = () => {
-    if (onCancel) {
-      onCancel();
-    }
+    setErrors({});
+    setFormData({
+      title: '',
+      description: '',
+      priority: TicketPriority.MEDIUM,
+      status: TicketStatus.OPEN,
+      assignedTo: '',
+      dueDate: '',
+      tags: []
+    });
+    navigate(-1)
+      
   };
 
   const formContent = (
@@ -226,9 +417,8 @@ export default function CreateTicket({ onSubmit, onCancel, isModal = false }: Cr
           value={formData.title}
           onChange={(e) => handleInputChange('title', e.target.value)}
           placeholder="Enter ticket title"
-          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-            errors.title ? 'border-red-300' : 'border-gray-300'
-          }`}
+          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${errors.title ? 'border-red-300' : 'border-gray-300'
+            }`}
         />
         {errors.title && (
           <p className="mt-1 text-sm text-red-600">{errors.title}</p>
@@ -245,9 +435,8 @@ export default function CreateTicket({ onSubmit, onCancel, isModal = false }: Cr
           onChange={(e) => handleInputChange('description', e.target.value)}
           placeholder="Describe the issue or requirement in detail"
           rows={4}
-          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-            errors.description ? 'border-red-300' : 'border-gray-300'
-          }`}
+          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${errors.description ? 'border-red-300' : 'border-gray-300'
+            }`}
         />
         {errors.description && (
           <p className="mt-1 text-sm text-red-600">{errors.description}</p>
@@ -307,9 +496,8 @@ export default function CreateTicket({ onSubmit, onCancel, isModal = false }: Cr
             value={formData.assignedTo}
             onChange={(e) => handleInputChange('assignedTo', e.target.value)}
             placeholder="user@company.com"
-            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-              errors.assignedTo ? 'border-red-300' : 'border-gray-300'
-            }`}
+            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${errors.assignedTo ? 'border-red-300' : 'border-gray-300'
+              }`}
           />
           {errors.assignedTo && (
             <p className="mt-1 text-sm text-red-600">{errors.assignedTo}</p>
@@ -325,9 +513,8 @@ export default function CreateTicket({ onSubmit, onCancel, isModal = false }: Cr
             value={formData.dueDate}
             onChange={(e) => handleInputChange('dueDate', e.target.value)}
             min={new Date().toISOString().split('T')[0]}
-            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-              errors.dueDate ? 'border-red-300' : 'border-gray-300'
-            }`}
+            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${errors.dueDate ? 'border-red-300' : 'border-gray-300'
+              }`}
           />
           {errors.dueDate && (
             <p className="mt-1 text-sm text-red-600">{errors.dueDate}</p>
@@ -381,6 +568,109 @@ export default function CreateTicket({ onSubmit, onCancel, isModal = false }: Cr
         </p>
       </div>
 
+      {/* File Attachments */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Attachments
+        </label>
+
+        {/* Drag and Drop Area */}
+        <div
+          className={`relative border-2 border-dashed rounded-lg p-6 text-center transition-colors ${isDragOver
+              ? 'border-blue-400 bg-blue-50'
+              : errors.files
+                ? 'border-red-300 bg-red-50'
+                : 'border-gray-300 hover:border-gray-400'
+            }`}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+        >
+          <input
+            type="file"
+            multiple
+            onChange={handleFileSelect}
+            accept={FILE_UPLOAD_VALIDATION.allowedExtensions.join(',')}
+            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+          />
+          <div className="space-y-2">
+            <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+              <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <div className="text-gray-600">
+              <span className="font-medium text-blue-600 hover:text-blue-500">Click to upload</span> or drag and drop
+            </div>
+            <p className="text-xs text-gray-500">
+              Up to {FILE_UPLOAD_VALIDATION.maxFilesPerUpload} files, max {FILE_UPLOAD_VALIDATION.maxFileSize / (1024 * 1024)}MB each
+            </p>
+            <p className="text-xs text-gray-500">
+              PDF, DOC, DOCX, XLS, XLSX, JPG, PNG, GIF, TXT, CSV, ZIP
+            </p>
+          </div>
+        </div>
+
+        {errors.files && (
+          <p className="mt-1 text-sm text-red-600">{errors.files}</p>
+        )}
+
+        {/* File List */}
+        {attachedFiles.length > 0 && (
+          <div className="mt-4 space-y-2">
+            <h4 className="text-sm font-medium text-gray-700">
+              Attached Files ({attachedFiles.length}/{FILE_UPLOAD_VALIDATION.maxFilesPerUpload})
+            </h4>
+            <div className="space-y-2">
+              {attachedFiles.map((attachedFile) => (
+                <div
+                  key={attachedFile.id}
+                  className={`flex items-center p-3 rounded-lg border ${attachedFile.error ? 'border-red-200 bg-red-50' : 'border-gray-200 bg-gray-50'
+                    }`}
+                >
+                  {/* File Preview/Icon */}
+                  <div className="flex-shrink-0 mr-3">
+                    {attachedFile.preview ? (
+                      <img
+                        src={attachedFile.preview}
+                        alt={attachedFile.file.name}
+                        className="h-10 w-10 rounded object-cover"
+                      />
+                    ) : (
+                      <div className="h-10 w-10 rounded bg-gray-200 flex items-center justify-center text-lg">
+                        {getFileIcon(attachedFile.file.type)}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* File Info */}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-gray-900 truncate">
+                      {attachedFile.file.name}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      {formatFileSize(attachedFile.file.size)}
+                    </p>
+                    {attachedFile.error && (
+                      <p className="text-xs text-red-600 mt-1">{attachedFile.error}</p>
+                    )}
+                  </div>
+
+                  {/* Remove Button */}
+                  <button
+                    type="button"
+                    onClick={() => removeFile(attachedFile.id)}
+                    className="flex-shrink-0 ml-2 text-gray-400 hover:text-red-600 transition-colors"
+                  >
+                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
       {/* Error message */}
       {errors.submit && (
         <div className="bg-red-50 border border-red-200 rounded-md p-4">
@@ -410,7 +700,7 @@ export default function CreateTicket({ onSubmit, onCancel, isModal = false }: Cr
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
           )}
-          {isSubmitting ? 'Saving...' : 'Save Ticket'}
+          {isSubmitting ? 'Creating...' : 'Create Ticket'}
         </button>
       </div>
     </div>
@@ -419,7 +709,7 @@ export default function CreateTicket({ onSubmit, onCancel, isModal = false }: Cr
   // If used as modal, wrap in modal container
   if (isModal) {
     return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-800 relative overflow-hidden">
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
         <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
           {/* Modal Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-200">
@@ -434,7 +724,7 @@ export default function CreateTicket({ onSubmit, onCancel, isModal = false }: Cr
               </svg>
             </button>
           </div>
-          
+
           {/* Modal Content */}
           <div className="p-6">
             {formContent}
@@ -448,8 +738,8 @@ export default function CreateTicket({ onSubmit, onCancel, isModal = false }: Cr
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-800 relative overflow-hidden">
       {/* Header */}
-            <Navigation/>
-      
+      <Navigation />
+
       <div className="relative z-10 pt-20 pb-8 backdrop-blur-md bg-white/5 border-b border-white/10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="py-6">

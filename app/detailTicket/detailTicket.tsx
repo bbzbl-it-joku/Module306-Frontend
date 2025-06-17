@@ -8,7 +8,7 @@ import { CommentForm } from './commentForm';
 import { AttachmentList } from './attachmentList';
 import type { Comment, Attachment, AttachmentLinkType } from '~/types';
 import { Navigation } from '~/navigation/navigation';
-
+import type { TicketStatus } from '~/types/common';
 // Mock comments data
 const mockComments: Comment[] = [
   {
@@ -64,6 +64,9 @@ export function TicketDetail() {
     return mockTickets.find((t: { id: any; }) => t.id === id);
   }, [id]);
 
+  const [currentStatus, setCurrentStatus] = useState(ticket?.status); // Add this line
+
+
   const ticketComments = useMemo(() => {
     return comments.filter(comment => comment.ticketId === id);
   }, [comments, id]);
@@ -91,7 +94,8 @@ export function TicketDetail() {
     setComments(prev => [...prev, newComment]);
   };
 
-  const handleStatusChange = (newStatus: string) => {
+ const handleStatusChange = (newStatus: string) => {
+    setCurrentStatus(newStatus as TicketStatus); // Update local state
     // In real app, this would make an API call
     console.log(`Updating ticket ${id} status to ${newStatus}`);
   };
@@ -137,7 +141,7 @@ export function TicketDetail() {
                   <div className="flex items-center space-x-3 mb-2">
                     <span className="text-sm font-mono text-white-500">#{ticket.id}</span>
                     <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full border ${STATUS_COLORS[ticket.status].bg} ${STATUS_COLORS[ticket.status].text}`}>
-                      {ticket.status.replace('-', ' ')}
+                      {currentStatus?.replace('-', ' ')}
                     </span>
                     <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full border ${PRIORITY_COLORS[ticket.priority].bg} ${PRIORITY_COLORS[ticket.priority].text}`}>
                       {ticket.priority}
@@ -146,12 +150,12 @@ export function TicketDetail() {
                   <h1 className="text-3xl font-bold text-white-900">{ticket.title}</h1>
                 </div>
               </div>
-              <div className="flex space-x-3">
+              <div className="flex space-x-3 bg-black-90">
                 <select
-                  value={ticket.status}
+                  value={currentStatus}
                   onChange={(e) => handleStatusChange(e.target.value)}
-                  className="border border-black-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 "
-                >
+                  className="border border-black-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black transition-colors"
+                 >
                   <option value="open">Open</option>
                   <option value="in-progress">In Progress</option>
                   <option value="under-review">Under Review</option>
