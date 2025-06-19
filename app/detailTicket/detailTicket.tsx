@@ -176,7 +176,7 @@ export function TicketDetail() {
           {/* Main Content Column */}
           <div className="lg:col-span-2 space-y-8">
             {/* Ticket Description */}
-            <div className="group relative backdrop-blur-md bg-black/60 border border-white/20 rounded-2xl hover:bg-black/70 transition-all p-6 cursor-pointer overflow-hidden"
+            <div className="group relative backdrop-blur-md bg-black/60 border border-white/20 rounded-2xl hover:bg-black/70 transition-all p-6 overflow-hidden"
             >
               <h2 className="text-xl font-semibold text-gray-90 mb-4">Description</h2>
               <p className="text-gray-70 leading-relaxed whitespace-pre-wrap">
@@ -185,7 +185,7 @@ export function TicketDetail() {
             </div>
 
             {/* Comments Section */}
-            <div className="group relative backdrop-blur-md bg-black/60 border border-white/20  rounded-2xl hover:bg-black/70 transition-all duration-300 p-6 cursor-pointer overflow-hidden"
+            <div className="group relative backdrop-blur-md bg-black/60 border border-white/20  rounded-2xl hover:bg-black/70 transition-all duration-300 p-6  overflow-hidden"
             >
               <h2 className="text-xl font-semibold text-gray-90 mb-6">
                 Comments ({ticketComments.length})
@@ -203,7 +203,7 @@ export function TicketDetail() {
           <div className="space-y-6">
             {/* Ticket Details */}
             <div
-              className="group relative backdrop-blur-md bg-black/60 border border-white/20 rounded-2xl hover:bg-black/70 transition-all duration-300  p-6 cursor-pointer overflow-hidden"
+              className="group relative backdrop-blur-md bg-black/60 border border-white/20 rounded-2xl hover:bg-black/70 transition-all duration-300  p-6 overflow-hidden"
             >
               <h3 className="text-lg font-semibold text-gray-90 mb-4">Details</h3>
               <dl className="space-y-3">
@@ -247,7 +247,7 @@ export function TicketDetail() {
 
             {/* Tags */}
             {ticket.tags.length > 0 && (
-              <div className="group relative backdrop-blur-md bg-black/60 border border-white/20 rounded-2xl hover:bg-black/70 transition-all duration-300  p-6 cursor-pointer overflow-hidden"
+              <div className="group relative backdrop-blur-md bg-black/60 border border-white/20 rounded-2xl hover:bg-black/70 transition-all duration-300  p-6  overflow-hidden"
               >
                 <h3 className="text-lg font-semibold text-gray-90 mb-4">Tags</h3>
                 <div className="flex flex-wrap gap-2">
@@ -265,7 +265,7 @@ export function TicketDetail() {
             )}
 
             {/* Attachments */}
-            <div className="group relative backdrop-blur-md bg-black/60 border border-white/20 rounded-2xl hover:bg-black/70 transition-all duration-300  p-6 cursor-pointer overflow-hidden"
+            <div className="group relative backdrop-blur-md bg-black/60 border border-white/20 rounded-2xl hover:bg-black/70 transition-all duration-300  p-6  overflow-hidden"
             >
               <h3 className="text-lg font-semibold text-gray-90 mb-4">
                 Attachments ({ticketAttachments.length})

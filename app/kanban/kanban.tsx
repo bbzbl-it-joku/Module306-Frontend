@@ -170,7 +170,7 @@ function KanbanColumn({ title, tickets, status, onTicketClick }: KanbanColumnPro
             </div>
 
             {/* Column Content */}
-            <div      className="group relative backdrop-blur-md bg-black/60 border border-white/20 rounded-b-lg  transition-all duration-300 p-6 cursor-pointer overflow-hidden"
+            <div      className="group relative backdrop-blur-md bg-black/60 border border-white/20 rounded-b-lg  transition-all duration-300 p-6 overflow-hidden"
 
 >
                 {tickets.length === 0 ? (
