@@ -88,19 +88,20 @@ function KanbanCard({ ticket, onClick }: { ticket: Ticket; onClick?: (id: string
 
     return (
         <div
-            className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 p-4 border border-gray-200 cursor-pointer mb-3"
+              className="group text-gray-50 hover:border-white/80  relative shadow-sm hover:shadow-md border border-white/30 rounded-lg transition-all duration-200  p-4 cursor-pointer overflow-hidden mb-3"
+
             onClick={handleCardClick}
         >
             {/* Header */}
             <div className="flex items-start justify-between mb-2">
-                <span className="text-xs font-mono text-gray-500">#{ticket.id}</span>
+                <span className="text-xs font-mono text-gray-200">#{ticket.id}</span>
                 <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${PRIORITY_COLORS[ticket.priority].bg} ${PRIORITY_COLORS[ticket.priority].text}`}>
                     {ticket.priority}
                 </span>
             </div>
 
             {/* Title */}
-            <h3 className="text-sm font-semibold text-gray-900 mb-2 line-clamp-2">
+            <h3 className="text-sm font-semibold text-gray-90 mb-2 line-clamp-2">
                 {ticket.title}
             </h3>
 
@@ -110,13 +111,13 @@ function KanbanCard({ ticket, onClick }: { ticket: Ticket; onClick?: (id: string
                     {ticket.tags.slice(0, 2).map((tag) => (
                         <span
                             key={tag}
-                            className="inline-flex px-2 py-1 text-xs font-medium bg-gray-100 text-gray-600 rounded"
+                            className="inline-flex px-2 py-1 text-xs font-medium bg-gray-900 text-gray-60 rounded"
                         >
                             {tag}
                         </span>
                     ))}
                     {ticket.tags.length > 2 && (
-                        <span className="inline-flex px-2 py-1 text-xs font-medium bg-gray-100 text-gray-600 rounded">
+                        <span className="inline-flex px-2 py-1 text-xs font-medium bg-gray-900 text-gray-60 rounded">
                             +{ticket.tags.length - 2}
                         </span>
                     )}
@@ -124,11 +125,11 @@ function KanbanCard({ ticket, onClick }: { ticket: Ticket; onClick?: (id: string
             )}
 
             {/* Footer */}
-            <div className="flex items-center justify-between text-xs text-gray-500">
+            <div className="flex items-center justify-between text-xs text-gray-50">
                 {ticket.assignedTo && (
                     <div className="flex items-center space-x-1">
                         <div className="w-5 h-5 bg-gray-300 rounded-full flex items-center justify-center">
-                            <span className="text-xs font-medium text-gray-700">
+                            <span className="text-xs font-medium text-gray-70">
                                 {ticket.assignedTo.charAt(0).toUpperCase()}
                             </span>
                         </div>
@@ -169,7 +170,9 @@ function KanbanColumn({ title, tickets, status, onTicketClick }: KanbanColumnPro
             </div>
 
             {/* Column Content */}
-            <div className="bg-gray-50 rounded-b-lg p-4 min-h-96 max-h-screen overflow-y-auto">
+            <div      className="group relative backdrop-blur-md bg-black/60 border border-white/20 rounded-b-lg  transition-all duration-300 p-6 cursor-pointer overflow-hidden"
+
+>
                 {tickets.length === 0 ? (
                     <div className="text-center text-gray-400 mt-8">
                         <div className="text-4xl mb-2">📋</div>
