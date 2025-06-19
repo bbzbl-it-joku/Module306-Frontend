@@ -163,9 +163,7 @@ export function TicketDetail() {
                   <option value="closed">Closed</option>
                   <option value="cancelled">Cancelled</option>
                 </select>
-                <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm">
-                  Edit Ticket
-                </button>
+
               </div>
             </div>
           </div>

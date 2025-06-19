@@ -1,23 +1,10 @@
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Navigation } from '~/navigation/navigation';
-
+import { mockTickets } from '../types/ticket'; // Assuming you have a separate file for mock data
+import { TicketStatus, TicketPriority } from '../types/common'; // Assuming you have a separate file for types
 // Mock data and types (based on your existing structure)
-const TicketStatus = {
-    OPEN: 'open',
-    IN_PROGRESS: 'in-progress',
-    UNDER_REVIEW: 'under-review',
-    RESOLVED: 'resolved',
-    CLOSED: 'closed',
-    CANCELLED: 'cancelled'
-} as const;
 
-const TicketPriority = {
-    LOW: 'low',
-    MEDIUM: 'medium',
-    HIGH: 'high',
-    CRITICAL: 'critical'
-} as const;
 
 const STATUS_COLORS = {
     [TicketStatus.OPEN]: {
@@ -75,86 +62,7 @@ const PRIORITY_COLORS = {
     }
 };
 
-const mockTickets = [
-    {
-        id: 'TKT-001',
-        title: 'Fix login authentication bug',
-        description: 'Users unable to login with correct credentials. Error occurs intermittently during peak hours.',
-        status: TicketStatus.OPEN,
-        priority: TicketPriority.HIGH,
-        assignedTo: 'john.doe@company.com',
-        createdBy: 'jane.smith@company.com',
-        createdAt: '2024-01-15T09:30:00Z',
-        modifiedBy: 'jane.smith@company.com',
-        modifiedAt: '2024-01-15T09:30:00Z',
-        tags: ['bug', 'authentication', 'urgent']
-    },
-    {
-        id: 'TKT-002',
-        title: 'Implement dark mode theme',
-        description: 'Add dark mode toggle to user preferences with system preference detection.',
-        status: TicketStatus.IN_PROGRESS,
-        priority: TicketPriority.MEDIUM,
-        assignedTo: 'alice.johnson@company.com',
-        createdBy: 'bob.wilson@company.com',
-        createdAt: '2024-01-10T14:20:00Z',
-        modifiedBy: 'alice.johnson@company.com',
-        modifiedAt: '2024-01-20T16:45:00Z',
-        tags: ['feature', 'ui', 'theme']
-    },
-    {
-        id: 'TKT-003',
-        title: 'Database performance optimization',
-        description: 'Query response times exceeding 2 seconds for user dashboard. Affects 15% of users.',
-        status: TicketStatus.RESOLVED,
-        priority: TicketPriority.CRITICAL,
-        assignedTo: 'charlie.brown@company.com',
-        createdBy: 'diana.prince@company.com',
-        createdAt: '2024-01-05T11:15:00Z',
-        modifiedBy: 'charlie.brown@company.com',
-        modifiedAt: '2024-01-18T13:30:00Z',
-        tags: ['performance', 'database', 'optimization']
-    },
-    {
-        id: 'TKT-004',
-        title: 'Update user documentation',
-        description: 'Revise API documentation for v2.0 release including new endpoints and examples.',
-        status: TicketStatus.CLOSED,
-        priority: TicketPriority.LOW,
-        assignedTo: 'eve.adams@company.com',
-        createdBy: 'frank.miller@company.com',
-        createdAt: '2024-01-12T08:00:00Z',
-        modifiedBy: 'eve.adams@company.com',
-        modifiedAt: '2024-01-22T17:00:00Z',
-        tags: ['documentation', 'api']
-    },
-    {
-        id: 'TKT-005',
-        title: 'Mobile responsive layout issues',
-        description: 'Layout breaks on screens smaller than 768px. Navigation menu overlaps content.',
-        status: TicketStatus.OPEN,
-        priority: TicketPriority.MEDIUM,
-        assignedTo: 'grace.hopper@company.com',
-        createdBy: 'henry.ford@company.com',
-        createdAt: '2024-01-20T10:30:00Z',
-        modifiedBy: 'henry.ford@company.com',
-        modifiedAt: '2024-01-20T10:30:00Z',
-        tags: ['bug', 'responsive', 'mobile', 'css']
-    },
-    {
-        id: 'TKT-006',
-        title: 'Implement file upload feature',
-        description: 'Add ability to upload and attach files to tickets with preview functionality.',
-        status: TicketStatus.UNDER_REVIEW,
-        priority: TicketPriority.HIGH,
-        assignedTo: 'bob.wilson@company.com',
-        createdBy: 'alice.johnson@company.com',
-        createdAt: '2024-01-18T11:00:00Z',
-        modifiedBy: 'bob.wilson@company.com',
-        modifiedAt: '2024-01-21T14:30:00Z',
-        tags: ['feature', 'upload', 'files']
-    }
-];
+
 
 // Kanban Card Component
 type Ticket = typeof mockTickets[number];
