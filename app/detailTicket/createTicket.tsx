@@ -410,7 +410,7 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
     <div className="space-y-6">
       {/* Title */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-gray-70 mb-2">
           Title <span className="text-red-500">*</span>
         </label>
         <input
@@ -418,8 +418,8 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
           value={formData.title}
           onChange={(e) => handleInputChange('title', e.target.value)}
           placeholder="Enter ticket title"
-          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${errors.title ? 'border-red-300' : 'border-gray-300'
-            }`}
+          className="placeholder-gray-50 w-full px-3 py-2 relative backdrop-blur-md bg-black/60 border border-white/20 rounded-xl hover:bg-black/70 transition-all duration-300  p-6 cursor-pointer overflow-hidden"
+
         />
         {errors.title && (
           <p className="mt-1 text-sm text-red-600">{errors.title}</p>
@@ -428,7 +428,7 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
 
       {/* Description */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-gray-70 mb-2">
           Description <span className="text-red-500">*</span>
         </label>
         <textarea
@@ -436,13 +436,13 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
           onChange={(e) => handleInputChange('description', e.target.value)}
           placeholder="Describe the issue or requirement in detail"
           rows={4}
-          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${errors.description ? 'border-red-300' : 'border-gray-300'
-            }`}
+          className="placeholder-gray-50 w-full px-3 py-2 relative backdrop-blur-md bg-black/60 border border-white/20 rounded-xl hover:bg-black/70 transition-all duration-300  p-6 cursor-pointer overflow-hidden"
+
         />
         {errors.description && (
           <p className="mt-1 text-sm text-red-600">{errors.description}</p>
         )}
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-1 text-sm text-gray-50">
           {formData.description.length}/1000 characters
         </p>
       </div>
@@ -450,13 +450,14 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
       {/* Priority and Status Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-70 mb-2">
             Priority
           </label>
           <select
             value={formData.priority}
             onChange={(e) => handleInputChange('priority', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 relative backdrop-blur-md bg-black/60 border border-white/20 rounded-xl hover:bg-black/70 transition-all duration-300  p-6 cursor-pointer overflow-hidden"
+
           >
             <option value={TicketPriority.LOW}>Low</option>
             <option value={TicketPriority.MEDIUM}>Medium</option>
@@ -471,13 +472,13 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-70 mb-2">
             Initial Status
           </label>
           <select
             value={formData.status}
             onChange={(e) => handleInputChange('status', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 relative backdrop-blur-md bg-black/60 border border-white/20 rounded-xl hover:bg-black/70 transition-all duration-300  p-6 cursor-pointer overflow-hidden"
           >
             <option value={TicketStatus.OPEN}>Open</option>
             <option value={TicketStatus.IN_PROGRESS}>In Progress</option>
@@ -489,7 +490,7 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
       {/* Assignee and Due Date Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-70 mb-2">
             Assign To
           </label>
           <input
@@ -497,8 +498,8 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
             value={formData.assignedTo}
             onChange={(e) => handleInputChange('assignedTo', e.target.value)}
             placeholder="user@company.com"
-            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${errors.assignedTo ? 'border-red-300' : 'border-gray-300'
-              }`}
+            className="placeholder-gray-50 w-full px-3 py-2 relative backdrop-blur-md bg-black/60 border border-white/20 rounded-xl hover:bg-black/70 transition-all duration-300  p-6 cursor-pointer overflow-hidden"
+              
           />
           {errors.assignedTo && (
             <p className="mt-1 text-sm text-red-600">{errors.assignedTo}</p>
@@ -506,7 +507,7 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-70 mb-2">
             Due Date
           </label>
           <input
@@ -514,8 +515,8 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
             value={formData.dueDate}
             onChange={(e) => handleInputChange('dueDate', e.target.value)}
             min={new Date().toISOString().split('T')[0]}
-            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${errors.dueDate ? 'border-red-300' : 'border-gray-300'
-              }`}
+            className="placeholder-gray-50 w-full px-3 py-2 relative backdrop-blur-md bg-black/60 border border-white/20 rounded-xl hover:bg-black/70 transition-all duration-300  p-6 cursor-pointer overflow-hidden"
+
           />
           {errors.dueDate && (
             <p className="mt-1 text-sm text-red-600">{errors.dueDate}</p>
@@ -525,7 +526,7 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
 
       {/* Tags */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-gray-70 mb-2">
           Tags
         </label>
         <div className="flex flex-wrap gap-2 mb-2">
@@ -554,35 +555,30 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
             onChange={(e) => setNewTag(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleAddTag()}
             placeholder="Add tag (e.g., bug, feature, urgent)"
-            className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="placeholder-gray-50 w-full px-3 py-2 relative backdrop-blur-md bg-black/60 border border-white/20 rounded-xl hover:bg-black/70 transition-all duration-300  p-6 cursor-pointer overflow-hidden"
           />
           <button
             type="button"
             onClick={handleAddTag}
-            className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
+            className="placeholder-gray-50 px-4 py-2 relative backdrop-blur-md bg-black/60 border border-white/20 rounded-xl hover:bg-black/70 transition-all duration-300  p-6 cursor-pointer overflow-hidden"
           >
             Add
           </button>
         </div>
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-1 text-sm text-gray-50">
           Press Enter or click Add to add tags
         </p>
       </div>
 
       {/* File Attachments */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+      <div >
+        <label className="block text-sm font-medium text-gray-70 mb-2">
           Attachments
         </label>
 
         {/* Drag and Drop Area */}
         <div
-          className={`relative border-2 border-dashed rounded-lg p-6 text-center transition-colors ${isDragOver
-              ? 'border-blue-400 bg-blue-50'
-              : errors.files
-                ? 'border-red-300 bg-red-50'
-                : 'border-gray-300 hover:border-gray-400'
-            }`}
+          className="placeholder-gray-50 w-full p-6 relative backdrop-blur-md bg-black/60 border-2 border-dashed text-center rounded-lg hover:bg-black/70 transition-colors duration-300  p-6 cursor-pointer overflow-hidden"
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
@@ -592,51 +588,54 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
             multiple
             onChange={handleFileSelect}
             accept={FILE_UPLOAD_VALIDATION.allowedExtensions.join(',')}
-            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer "
+            
           />
           <div className="space-y-2">
-            <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+            <svg className="mx-auto h-12 w-12 text-gray-40" stroke="currentColor" fill="none" viewBox="0 0 48 48">
               <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            <div className="text-gray-600">
+            <div className="text-gray-60">
               <span className="font-medium text-blue-600 hover:text-blue-500">Click to upload</span> or drag and drop
             </div>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-gray-50">
               Up to {FILE_UPLOAD_VALIDATION.maxFilesPerUpload} files, max {FILE_UPLOAD_VALIDATION.maxFileSize / (1024 * 1024)}MB each
             </p>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-gray-50">
               PDF, DOC, DOCX, XLS, XLSX, JPG, PNG, GIF, TXT, CSV, ZIP
             </p>
           </div>
         </div>
 
         {errors.files && (
-          <p className="mt-1 text-sm text-red-600">{errors.files}</p>
+          <p className="mt-1 text-sm text-red-60">{errors.files}</p>
         )}
 
         {/* File List */}
         {attachedFiles.length > 0 && (
           <div className="mt-4 space-y-2">
-            <h4 className="text-sm font-medium text-gray-700">
+            <h4 className="text-sm font-medium text-gray-70">
               Attached Files ({attachedFiles.length}/{FILE_UPLOAD_VALIDATION.maxFilesPerUpload})
             </h4>
             <div className="space-y-2">
               {attachedFiles.map((attachedFile) => (
                 <div
                   key={attachedFile.id}
-                  className={`flex items-center p-3 rounded-lg border ${attachedFile.error ? 'border-red-200 bg-red-50' : 'border-gray-200 bg-gray-50'
-                    }`}
+                  
+
+                 className={`placeholder-gray-50 w-full p-3 flex items-center backdrop-blur-md bg-black/60 border ${attachedFile.error ? 'border-red-200 bg-red-50' : 'border-gray-200'} rounded-lg hover:bg-black/70 transition-all duration-300  p-6 overflow-hidden"
+                 `}
                 >
                   {/* File Preview/Icon */}
-                  <div className="flex-shrink-0 mr-3">
+                  <div className="flex-shrink-0 mr-3 coursor-pointer">
                     {attachedFile.preview ? (
                       <img
                         src={attachedFile.preview}
                         alt={attachedFile.file.name}
-                        className="h-10 w-10 rounded object-cover"
+                        className="h-10 w-10 rounded object-cover "
                       />
                     ) : (
-                      <div className="h-10 w-10 rounded bg-gray-200 flex items-center justify-center text-lg">
+                      <div className="h-10 w-10 rounded bg-gray-20 flex items-center justify-center text-lg">
                         {getFileIcon(attachedFile.file.type)}
                       </div>
                     )}
@@ -644,10 +643,10 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
 
                   {/* File Info */}
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900 truncate">
+                    <p className="text-sm font-medium text-gray-90 truncate">
                       {attachedFile.file.name}
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-gray-50">
                       {formatFileSize(attachedFile.file.size)}
                     </p>
                     {attachedFile.error && (
@@ -659,9 +658,9 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
                   <button
                     type="button"
                     onClick={() => removeFile(attachedFile.id)}
-                    className="flex-shrink-0 ml-2 text-gray-400 hover:text-red-600 transition-colors"
+                    className="flex-shrink-0 ml-2 text-gray-400 hover:text-red-600 transition-colors hover:coursor-pointer"
                   >
-                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="h-5 w-5 coursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
@@ -684,7 +683,7 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
         <button
           type="button"
           onClick={handleCancel}
-          className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
+          className="px-4 py-2 border border-gray-30 text-gray-70 rounded-md hover:bg-gray-600 transition-colors"
           disabled={isSubmitting}
         >
           Cancel
@@ -714,11 +713,11 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
         <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
           {/* Modal Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-900">Create New Ticket</h2>
+            <h2 className="text-xl font-semibold text-gray-90">Create New Ticket</h2>
             <button
               type="button"
               onClick={handleCancel}
-              className="text-gray-400 hover:text-gray-600 transition-colors"
+              className="text-gray-40 hover:text-gray-60 transition-colors"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -727,7 +726,7 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
           </div>
 
           {/* Modal Content */}
-          <div className="p-6">
+          <div className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors group hover:text-gray-90">
             {formContent}
           </div>
         </div>
@@ -754,7 +753,7 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
 
       {/* Main Content */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-white shadow-sm rounded-lg p-6 text-gray-900">
+        <div className="p-4 border border-gray-200 rounded-lg  transition-colors group">
           {formContent}
         </div>
       </div>
