@@ -407,10 +407,10 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
   };
 
   const formContent = (
-    <div className="space-y-6">
+    <div className="group relative backdrop-blur-md bg-black/50 border border-white/20 rounded-2xl transition-all duration-300 p-6 overflow-hidden">
       {/* Title */}
       <div>
-        <label className="block text-sm font-medium text-gray-70 mb-2">
+        <label className="block text-sm font-medium text-gray-70 ">
           Title <span className="text-red-500">*</span>
         </label>
         <input
@@ -418,7 +418,7 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
           value={formData.title}
           onChange={(e) => handleInputChange('title', e.target.value)}
           placeholder="Enter ticket title"
-          className="placeholder-gray-50 w-full px-3 py-2 relative backdrop-blur-md bg-black/60 border border-white/20 rounded-xl hover:bg-black/70 transition-all duration-300  p-6 cursor-pointer overflow-hidden"
+          className="placeholder-gray-50 w-full px-3 py-2 relative backdrop-blur-md border border-white/20 rounded-xl  transition-all duration-300  p-6 cursor-pointer overflow-hidden"
 
         />
         {errors.title && (
@@ -427,8 +427,8 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
       </div>
 
       {/* Description */}
-      <div>
-        <label className="block text-sm font-medium text-gray-70 mb-2">
+      <div className='mt-2'>
+        <label className="block text-sm font-medium text-gray-70 ">
           Description <span className="text-red-500">*</span>
         </label>
         <textarea
@@ -436,7 +436,7 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
           onChange={(e) => handleInputChange('description', e.target.value)}
           placeholder="Describe the issue or requirement in detail"
           rows={4}
-          className="placeholder-gray-50 w-full px-3 py-2 relative backdrop-blur-md bg-black/60 border border-white/20 rounded-xl hover:bg-black/70 transition-all duration-300  p-6 cursor-pointer overflow-hidden"
+          className="placeholder-gray-50 w-full px-3 py-2 relative backdrop-blur-md  border border-white/20 rounded-xl  transition-all duration-300  p-6 cursor-pointer overflow-hidden"
 
         />
         {errors.description && (
@@ -448,9 +448,9 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
       </div>
 
       {/* Priority and Status Row */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
         <div>
-          <label className="block text-sm font-medium text-gray-70 mb-2">
+          <label className="block text-sm font-medium text-gray-70">
             Priority
           </label>
           <select
@@ -472,7 +472,7 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-70 mb-2">
+          <label className="block text-sm font-medium text-gray-70">
             Initial Status
           </label>
           <select
@@ -488,9 +488,9 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
       </div>
 
       {/* Assignee and Due Date Row */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
         <div>
-          <label className="block text-sm font-medium text-gray-70 mb-2">
+          <label className="block text-sm font-medium text-gray-70">
             Assign To
           </label>
           <input
@@ -498,7 +498,7 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
             value={formData.assignedTo}
             onChange={(e) => handleInputChange('assignedTo', e.target.value)}
             placeholder="user@company.com"
-            className="placeholder-gray-50 w-full px-3 py-2 relative backdrop-blur-md bg-black/60 border border-white/20 rounded-xl hover:bg-black/70 transition-all duration-300  p-6 cursor-pointer overflow-hidden"
+            className="placeholder-gray-50 w-full px-3 py-2 relative backdrop-blur-md  border border-white/20 rounded-xl transition-all duration-300  p-6 cursor-pointer overflow-hidden"
               
           />
           {errors.assignedTo && (
@@ -506,8 +506,8 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
           )}
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-70 mb-2">
+        <div className='mt-2'>
+          <label className="block text-sm font-medium text-gray-70">
             Due Date
           </label>
           <input
@@ -515,7 +515,7 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
             value={formData.dueDate}
             onChange={(e) => handleInputChange('dueDate', e.target.value)}
             min={new Date().toISOString().split('T')[0]}
-            className="placeholder-gray-50 w-full px-3 py-2 relative backdrop-blur-md bg-black/60 border border-white/20 rounded-xl hover:bg-black/70 transition-all duration-300  p-6 cursor-pointer overflow-hidden"
+            className="placeholder-gray-50 w-full px-3 py-2 relative backdrop-blur-md  border border-white/20 rounded-xl  transition-all duration-300  p-6 cursor-pointer overflow-hidden"
 
           />
           {errors.dueDate && (
@@ -525,11 +525,11 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
       </div>
 
       {/* Tags */}
-      <div>
-        <label className="block text-sm font-medium text-gray-70 mb-2">
+      <div className='mt-2'>
+        <label className="block text-sm font-medium text-gray-70 ">
           Tags
         </label>
-        <div className="flex flex-wrap gap-2 mb-2">
+        <div className="flex flex-wrap gap-2 ">
           {formData.tags.map((tag) => (
             <span
               key={tag}
@@ -555,30 +555,28 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
             onChange={(e) => setNewTag(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleAddTag()}
             placeholder="Add tag (e.g., bug, feature, urgent)"
-            className="placeholder-gray-50 w-full px-3 py-2 relative backdrop-blur-md bg-black/60 border border-white/20 rounded-xl hover:bg-black/70 transition-all duration-300  p-6 cursor-pointer overflow-hidden"
+            className="placeholder-gray-50 w-full px-3 py-2 relative backdrop-blur-md  border border-white/20 rounded-xl  transition-all duration-300  p-6 cursor-pointer overflow-hidden"
           />
           <button
             type="button"
             onClick={handleAddTag}
-            className="placeholder-gray-50 px-4 py-2 relative backdrop-blur-md bg-black/60 border border-white/20 rounded-xl hover:bg-black/70 transition-all duration-300  p-6 cursor-pointer overflow-hidden"
+            className="placeholder-gray-50 px-4 py-2 relative backdrop-blur-md  border border-white/20 rounded-xl  transition-all duration-300  p-6 cursor-pointer overflow-hidden"
           >
             Add
           </button>
         </div>
-        <p className="mt-1 text-sm text-gray-50">
-          Press Enter or click Add to add tags
-        </p>
+        
       </div>
 
       {/* File Attachments */}
-      <div >
-        <label className="block text-sm font-medium text-gray-70 mb-2">
+      <div className='mt-2'>
+        <label className="block text-sm font-medium text-gray-70">
           Attachments
         </label>
 
         {/* Drag and Drop Area */}
         <div
-          className="placeholder-gray-50 w-full p-6 relative backdrop-blur-md bg-black/60 border-2 border-dashed text-center rounded-lg hover:bg-black/70 transition-colors duration-300  p-6 cursor-pointer overflow-hidden"
+          className="placeholder-gray-50 w-full p-6 relative backdrop-blur-md  border-2 border-dashed text-center rounded-lg transition-colors duration-300  p-6 cursor-pointer overflow-hidden"
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
@@ -613,7 +611,7 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
 
         {/* File List */}
         {attachedFiles.length > 0 && (
-          <div className="mt-4 space-y-2">
+          <div className="mt-4 space-y-2 coursor-default">
             <h4 className="text-sm font-medium text-gray-70">
               Attached Files ({attachedFiles.length}/{FILE_UPLOAD_VALIDATION.maxFilesPerUpload})
             </h4>
@@ -623,11 +621,11 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
                   key={attachedFile.id}
                   
 
-                 className={`placeholder-gray-50 w-full p-3 flex items-center backdrop-blur-md bg-black/60 border ${attachedFile.error ? 'border-red-200 bg-red-50' : 'border-gray-200'} rounded-lg hover:bg-black/70 transition-all duration-300  p-6 overflow-hidden"
+                 className={`placeholder-gray-50 w-full p-3 coursor-pointer flex items-center backdrop-blur-md border ${attachedFile.error ? 'border-red-200 bg-red-50' : 'border-gray-200'} rounded-lg  transition-all duration-300  p-6 overflow-hidden"
                  `}
                 >
                   {/* File Preview/Icon */}
-                  <div className="flex-shrink-0 mr-3 coursor-pointer">
+                  <div className="flex-shrink-0 mr-3 ">
                     {attachedFile.preview ? (
                       <img
                         src={attachedFile.preview}
