@@ -365,6 +365,7 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
       // Call parent submit handler with ticket and files
       if (onSubmit) {
         await onSubmit(newTicket, validFiles);
+        console.log('Creating ticket:', newTicket, 'with files:', validFiles);
       } // actaul submission logic would go here, e.g. API call
 
       navigate(-1)
