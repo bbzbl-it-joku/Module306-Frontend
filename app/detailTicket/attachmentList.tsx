@@ -128,7 +128,7 @@ export function AttachmentList({ attachments, onAddAttachment, onRemoveAttachmen
       {attachments.map((attachment) => (
         <div
           key={attachment.id}
-          className="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors group hover:text-gray-900 "
+          className="flex items-center space-x-3 p-3 border border-white/20 hover:border-white/80 rounded-lg  transition-colors group "
         >
           {/* File Icon */}
           <div className="flex-shrink-0">
@@ -136,11 +136,11 @@ export function AttachmentList({ attachments, onAddAttachment, onRemoveAttachmen
           </div>
           
           {/* File Info */}
-          <div className="flex-1 min-w-0 hover:text-gray-900">
+          <div className="flex-1 min-w-0 ">
             <div className="text-sm font-medium text-gray-90 truncate">
               {getFileName(attachment.url)}
             </div>
-            <div className="text-xs text-gray-500 truncate hover:text-gray-700">
+            <div className="text-xs text-gray-500 truncate">
               {getFileSize(attachment.url)} • {attachment.mimeType}
             </div>
           </div>

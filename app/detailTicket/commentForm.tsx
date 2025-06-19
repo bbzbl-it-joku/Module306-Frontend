@@ -84,7 +84,7 @@ export function CommentForm({ onSubmit, placeholder = "Add a comment...", ticket
               onKeyDown={handleKeyDown}
               placeholder={placeholder}
               rows={3}
-              className="text-gray-90 w-full px-4 py-3 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-40 text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="text-gray-90 w-full px-4 py-3 border border-white/20 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-40 text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed hover:border-white/80"
               disabled={isSubmitting}
             />
 

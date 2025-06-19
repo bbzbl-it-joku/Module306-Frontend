@@ -20,16 +20,16 @@ export function CommentList({ comments }: CommentListProps) {
     const now = new Date();
     const commentDate = new Date(dateString);
     const diffInMinutes = Math.floor((now.getTime() - commentDate.getTime()) / (1000 * 60));
-    
+
     if (diffInMinutes < 1) return 'just now';
     if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
-    
+
     const diffInHours = Math.floor(diffInMinutes / 60);
     if (diffInHours < 24) return `${diffInHours}h ago`;
-    
+
     const diffInDays = Math.floor(diffInHours / 24);
     if (diffInDays < 7) return `${diffInDays}d ago`;
-    
+
     return formatDate(dateString);
   };
 
@@ -50,9 +50,9 @@ export function CommentList({ comments }: CommentListProps) {
         <div key={comment.id} className="relative">
           {/* Timeline line */}
           {index < comments.length - 1 && (
-            <div className="absolute left-6 top-12 w-0.5 h-full bg-gray-200" />
+            <div className="absolute left-6 top-12 w-0.5 h-full bg-gray-200 border-white/20 hover:border-white/80" />
           )}
-          
+
           <div className="flex space-x-4">
             {/* Avatar */}
             <div className="flex-shrink-0">
@@ -60,11 +60,11 @@ export function CommentList({ comments }: CommentListProps) {
                 {comment.createdBy.charAt(0).toUpperCase()}
               </div>
             </div>
-            
+
             {/* Comment Content */}
             <div className="flex-1 min-w-0">
-              <div className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors group hover:text-gray-900"
->
+              <div className="p-4 border border-white/20 rounded-lg hover:border-white/80 transition-colors group "
+              >
 
                 {/* Comment Header */}
                 <div className="flex items-center justify-between mb-2">
@@ -76,7 +76,7 @@ export function CommentList({ comments }: CommentListProps) {
                       {formatRelativeTime(comment.createdAt)}
                     </span>
                   </div>
-                  
+
                   {/* Comment Actions */}
                   <div className="flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button className="text-gray-400 hover:text-gray-600 p-1 rounded">
@@ -91,12 +91,12 @@ export function CommentList({ comments }: CommentListProps) {
                     </button>
                   </div>
                 </div>
-                
+
                 {/* Comment Text */}
                 <div className="text-gray-70 text-sm leading-relaxed whitespace-pre-wrap">
                   {comment.content}
                 </div>
-                
+
                 {/* Modified indicator */}
                 {comment.modifiedAt !== comment.createdAt && (
                   <div className="mt-2 text-xs text-gray-400">
