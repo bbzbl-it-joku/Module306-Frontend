@@ -152,8 +152,23 @@ interface KanbanColumnProps {
     onTicketClick: (id: string) => void;
 }
 
+// In your KanbanColumn component, add state for controlling visibility
 function KanbanColumn({ title, tickets, status, onTicketClick }: KanbanColumnProps) {
     const statusColors = STATUS_COLORS[status];
+    const [showAll, setShowAll] = useState(false);
+    
+    // Sort tickets by modified date (newest first)
+    const sortedTickets = useMemo(() => {
+        return [...tickets].sort((a, b) => {
+            return new Date(b.modifiedAt).getTime() - new Date(a.modifiedAt).getTime();
+        });
+    }, [tickets]);
+    
+    // Limit tickets to 10 if not showing all
+    const displayedTickets = showAll ? sortedTickets : sortedTickets.slice(0, 10);
+    
+    // Determine if we need a "Show All" button
+    const hasMoreTickets = sortedTickets.length > 10;
 
     return (
         <div className="flex-1 min-w-80 max-w-md">
@@ -170,22 +185,34 @@ function KanbanColumn({ title, tickets, status, onTicketClick }: KanbanColumnPro
             </div>
 
             {/* Column Content */}
-            <div      className="group relative backdrop-blur-md bg-black/60 border border-white/20 rounded-b-lg  transition-all duration-300 p-6 overflow-hidden"
-
->
+            <div className="group relative backdrop-blur-md bg-black/60 border border-white/20 rounded-b-lg transition-all duration-300 p-6 overflow-hidden">
                 {tickets.length === 0 ? (
                     <div className="text-center text-gray-400 mt-8">
                         <div className="text-4xl mb-2">📋</div>
                         <p className="text-sm">No tickets</p>
                     </div>
                 ) : (
-                    tickets.map((ticket) => (
-                        <KanbanCard
-                            key={ticket.id}
-                            ticket={ticket}
-                            onClick={onTicketClick}
-                        />
-                    ))
+                    <>
+                        {displayedTickets.map((ticket) => (
+                            <KanbanCard
+                                key={ticket.id}
+                                ticket={ticket}
+                                onClick={onTicketClick}
+                            />
+                        ))}
+                        
+                        {/* "Show All" button */}
+                        {hasMoreTickets && (
+                            <div className="mt-4 text-center">
+                                <button
+                                    onClick={() => setShowAll(!showAll)}
+                                    className="px-4 py-2 text-sm bg-white/10 hover:bg-white/20 text-white/80 hover:text-white rounded-md transition-colors"
+                                >
+                                    {showAll ? 'Show Less' : `Show All (${sortedTickets.length - 10} more)`}
+                                </button>
+                            </div>
+                        )}
+                    </>
                 )}
             </div>
         </div>
