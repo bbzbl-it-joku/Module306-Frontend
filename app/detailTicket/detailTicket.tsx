@@ -88,13 +88,13 @@ export function TicketDetail() {
 
   const handleAddComment = (content: Comment) => {
     if (!id) return;
-    
+
     const newComment: Comment = content;
-    
+
     setComments(prev => [...prev, newComment]);
   };
 
- const handleStatusChange = (newStatus: string) => {
+  const handleStatusChange = (newStatus: string) => {
     setCurrentStatus(newStatus as TicketStatus); // Update local state
     // In real app, this would make an API call
     console.log(`Updating ticket ${id} status to ${newStatus}`);
@@ -106,12 +106,12 @@ export function TicketDetail() {
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Ticket Not Found</h1>
           <p className="text-gray-600 mb-6">The ticket you&apos;re looking for doesn&apos;t exist.</p>
-            <button
+          <button
             onClick={() => navigate(-1)}
             className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-            >
+          >
             Back
-            </button>
+          </button>
         </div>
       </div>
     );
@@ -121,7 +121,7 @@ export function TicketDetail() {
     <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-800 relative overflow-hidden">
       {/* Header */}
 
-      <Navigation/>
+      <Navigation />
 
 
       <div className="relative z-10 pt-20 pb-8 backdrop-blur-md bg-white/5 border-b border-white/10">
@@ -154,8 +154,8 @@ export function TicketDetail() {
                 <select
                   value={currentStatus}
                   onChange={(e) => handleStatusChange(e.target.value)}
-                  className="border border-black-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black transition-colors"
-                 >
+                  className="px-2 py-3 group relative backdrop-blur-md bg-black/60 border border-white/20 rounded-2xl hover:bg-black/70 transition-all duration-300  p-6 cursor-pointer overflow-hidden"
+                >
                   <option value="open">Open</option>
                   <option value="in-progress">In Progress</option>
                   <option value="under-review">Under Review</option>
@@ -176,21 +176,23 @@ export function TicketDetail() {
           {/* Main Content Column */}
           <div className="lg:col-span-2 space-y-8">
             {/* Ticket Description */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Description</h2>
-              <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
+            <div className="group relative backdrop-blur-md bg-black/60 border border-white/20 rounded-2xl hover:bg-black/70 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 p-6 cursor-pointer overflow-hidden"
+            >
+              <h2 className="text-xl font-semibold text-gray-90 mb-4">Description</h2>
+              <p className="text-gray-70 leading-relaxed whitespace-pre-wrap">
                 {ticket.description}
               </p>
             </div>
 
             {/* Comments Section */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6">
+            <div className="group relative backdrop-blur-md bg-black/60 border border-white/20 rounded-2xl hover:bg-black/70 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 p-6 cursor-pointer overflow-hidden"
+            >
+              <h2 className="text-xl font-semibold text-gray-90 mb-6">
                 Comments ({ticketComments.length})
               </h2>
-              
+
               <CommentForm onSubmit={handleAddComment} ticketID={ticket.id} />
-              
+
               <div className="mt-6">
                 <CommentList comments={ticketComments} />
               </div>
@@ -200,12 +202,14 @@ export function TicketDetail() {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Ticket Details */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Details</h3>
+            <div
+              className="group relative backdrop-blur-md bg-black/60 border border-white/20 rounded-2xl hover:bg-black/70 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 p-6 cursor-pointer overflow-hidden"
+            >
+              <h3 className="text-lg font-semibold text-gray-90 mb-4">Details</h3>
               <dl className="space-y-3">
                 <div>
-                  <dt className="text-sm font-medium text-gray-500">Assigned To</dt>
-                  <dd className="text-sm text-gray-900">
+                  <dt className="text-sm font-medium text-gray-50">Assigned To</dt>
+                  <dd className="text-sm text-gray-90">
                     {ticket.assignedTo ? (
                       <div className="flex items-center space-x-2 mt-1">
                         <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
@@ -221,21 +225,21 @@ export function TicketDetail() {
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-sm font-medium text-gray-500">Created By</dt>
-                  <dd className="text-sm text-gray-900 mt-1">{ticket.createdBy.split('@')[0]}</dd>
+                  <dt className="text-sm font-medium text-gray-50">Created By</dt>
+                  <dd className="text-sm text-gray-90 mt-1">{ticket.createdBy.split('@')[0]}</dd>
                 </div>
                 <div>
-                  <dt className="text-sm font-medium text-gray-500">Created</dt>
-                  <dd className="text-sm text-gray-900 mt-1">{formatDate(ticket.createdAt)}</dd>
+                  <dt className="text-sm font-medium text-gray-50">Created</dt>
+                  <dd className="text-sm text-gray-90 mt-1">{formatDate(ticket.createdAt)}</dd>
                 </div>
                 <div>
-                  <dt className="text-sm font-medium text-gray-500">Last Modified</dt>
-                  <dd className="text-sm text-gray-900 mt-1">{formatDate(ticket.modifiedAt)}</dd>
+                  <dt className="text-sm font-medium text-gray-50">Last Modified</dt>
+                  <dd className="text-sm text-gray-90 mt-1">{formatDate(ticket.modifiedAt)}</dd>
                 </div>
                 {ticket.dueDate && (
                   <div>
-                    <dt className="text-sm font-medium text-gray-500">Due Date</dt>
-                    <dd className="text-sm text-gray-900 mt-1">{formatDate(ticket.dueDate)}</dd>
+                    <dt className="text-sm font-medium text-gray-50">Due Date</dt>
+                    <dd className="text-sm text-gray-90 mt-1">{formatDate(ticket.dueDate)}</dd>
                   </div>
                 )}
               </dl>
@@ -243,16 +247,16 @@ export function TicketDetail() {
 
             {/* Tags */}
             {ticket.tags.length > 0 && (
-              <div className="bg-white rounded-lg shadow-sm p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Tags</h3>
+              <div className="group relative backdrop-blur-md bg-black/60 border border-white/20 rounded-2xl hover:bg-black/70 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 p-6 cursor-pointer overflow-hidden"
+              >
+                <h3 className="text-lg font-semibold text-gray-90 mb-4">Tags</h3>
                 <div className="flex flex-wrap gap-2">
                   {ticket.tags
                     .filter((tag) => !!tag && (typeof tag === 'string' || typeof tag === 'number'))
                     .map((tag) => (
                       <span
                         key={tag}
-                        className="inline-flex px-3 py-1 text-sm font-medium bg-gray-100 text-gray-700 rounded-full"
-                      >
+                        className="px-3 py-1 border border-gray-200 rounded-lg  transition-colors group"                      >
                         {tag}
                       </span>
                     ))}
@@ -261,8 +265,9 @@ export function TicketDetail() {
             )}
 
             {/* Attachments */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            <div className="group relative backdrop-blur-md bg-black/60 border border-white/20 rounded-2xl hover:bg-black/70 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 p-6 cursor-pointer overflow-hidden"
+            >
+              <h3 className="text-lg font-semibold text-gray-90 mb-4">
                 Attachments ({ticketAttachments.length})
               </h3>
               <AttachmentList attachments={ticketAttachments} />

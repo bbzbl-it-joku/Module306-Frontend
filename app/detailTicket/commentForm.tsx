@@ -84,36 +84,36 @@ export function CommentForm({ onSubmit, placeholder = "Add a comment...", ticket
               onKeyDown={handleKeyDown}
               placeholder={placeholder}
               rows={3}
-              className="text-black w-full px-4 py-3 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400 text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="text-gray-90 w-full px-4 py-3 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-40 text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={isSubmitting}
             />
 
-            <div className="absolute bottom-2 right-2 text-xs text-gray-400">
+            <div className="absolute bottom-2 right-2 text-xs text-gray-40">
               {text.length}/10000
             </div>
           </div>
 
           {/* Attachments preview */}
           {attachments.length > 0 && (
-            <div className="mt-3 space-y-2">
-              <p className="text-xs text-gray-500 font-medium">Attachments ({attachments.length})</p>
+            <div className="mt-3 space-y-2 ">
+              <p className="text-xs text-gray-50 font-medium">Attachments ({attachments.length})</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {attachments.map((file, index) => (
                   <div 
                     key={`${file.name}-${index}`}
-                    className="bg-gray-100 rounded-lg p-2 flex items-center justify-between"
+                    className="bg-gray-800 rounded-lg p-2 flex items-center justify-between"
                   >
                     <div className="flex items-center space-x-2 flex-1 min-w-0">
-                      <svg className="w-5 h-5 text-gray-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <svg className="w-5 h-5 text-gray-50 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z" clipRule="evenodd" />
                       </svg>
-                      <span className="text-sm text-gray-700 truncate">{file.name}</span>
-                      <span className="text-xs text-gray-500 flex-shrink-0">({(file.size / 1024).toFixed(1)} KB)</span>
+                      <span className="text-sm text-gray-70 truncate">{file.name}</span>
+                      <span className="text-xs text-gray-50 flex-shrink-0">({(file.size / 1024).toFixed(1)} KB)</span>
                     </div>
                     <button 
                       type="button" 
                       onClick={() => removeAttachment(index)}
-                      className="text-gray-400 hover:text-gray-600 ml-2 flex-shrink-0"
+                      className="text-gray-400 hover:text-gray-60 ml-2 flex-shrink-0"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -130,12 +130,12 @@ export function CommentForm({ onSubmit, placeholder = "Add a comment...", ticket
             <div className="flex items-center space-x-4">
               {/* Multiple file attachment button */}
               <div className="flex items-center space-x-2">
-                <label htmlFor="file-upload" className="cursor-pointer text-gray-500 hover:text-gray-700">
+                <label htmlFor="file-upload" className="cursor-pointer text-gray-50 hover:text-gray-300">
                   <div className="flex items-center">
                     <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
                     </svg>
-                    <span className="text-xs">
+                    <span className="text-xs bg">
                       {attachments.length > 0 ? `${attachments.length} files` : 'Attach files'}
                     </span>
                   </div>
@@ -150,7 +150,7 @@ export function CommentForm({ onSubmit, placeholder = "Add a comment...", ticket
                 />
               </div>
 
-              <div className="text-xs text-gray-400">
+              <div className="text-xs text-gray-40">
                 Cmd+Enter to submit
               </div>
             </div>
@@ -162,7 +162,7 @@ export function CommentForm({ onSubmit, placeholder = "Add a comment...", ticket
                   setText('');
                   setAttachments([]);
                 }}
-                className="text-gray-500 hover:text-gray-700 text-sm transition-colors"
+                className="text-gray-50 hover:text-gray-40 text-sm transition-colors"
                 disabled={isSubmitting || (!text.trim() && attachments.length === 0)}
               >
                 Cancel

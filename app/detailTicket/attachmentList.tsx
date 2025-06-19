@@ -128,7 +128,7 @@ export function AttachmentList({ attachments, onAddAttachment, onRemoveAttachmen
       {attachments.map((attachment) => (
         <div
           key={attachment.id}
-          className="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors group"
+          className="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors group hover:text-gray-900 "
         >
           {/* File Icon */}
           <div className="flex-shrink-0">
@@ -136,11 +136,11 @@ export function AttachmentList({ attachments, onAddAttachment, onRemoveAttachmen
           </div>
           
           {/* File Info */}
-          <div className="flex-1 min-w-0">
-            <div className="text-sm font-medium text-gray-900 truncate">
+          <div className="flex-1 min-w-0 hover:text-gray-900">
+            <div className="text-sm font-medium text-gray-90 truncate">
               {getFileName(attachment.url)}
             </div>
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-gray-500 truncate hover:text-gray-700">
               {getFileSize(attachment.url)} • {attachment.mimeType}
             </div>
           </div>
@@ -187,7 +187,7 @@ export function AttachmentList({ attachments, onAddAttachment, onRemoveAttachmen
       <div className="relative">
         <label 
           htmlFor="attachment-upload-list" 
-          className="block w-full p-3 border-2 border-dashed border-gray-300 rounded-lg text-center text-gray-500 hover:border-gray-400 hover:text-gray-600 transition-colors group cursor-pointer"
+          className="block w-full p-3 border-2 border-dashed border-gray-300 rounded-lg text-center text-gray-50 hover:border-gray-400 hover:text-gray-400 transition-colors group cursor-pointer"
         >
           <div className="flex items-center justify-center space-x-2">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -63,14 +63,16 @@ export function CommentList({ comments }: CommentListProps) {
             
             {/* Comment Content */}
             <div className="flex-1 min-w-0">
-              <div className="bg-gray-50 rounded-lg p-4">
+              <div className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors group hover:text-gray-900"
+>
+
                 {/* Comment Header */}
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center space-x-2">
-                    <span className="font-medium text-gray-900 text-sm">
+                    <span className="font-medium text-gray-90 text-sm">
                       {comment.createdBy.split('@')[0]}
                     </span>
-                    <span className="text-gray-500 text-xs">
+                    <span className="text-gray-50 text-xs">
                       {formatRelativeTime(comment.createdAt)}
                     </span>
                   </div>
@@ -91,7 +93,7 @@ export function CommentList({ comments }: CommentListProps) {
                 </div>
                 
                 {/* Comment Text */}
-                <div className="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap">
+                <div className="text-gray-70 text-sm leading-relaxed whitespace-pre-wrap">
                   {comment.content}
                 </div>
                 
