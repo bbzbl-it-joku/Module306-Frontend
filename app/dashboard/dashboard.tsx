@@ -8,12 +8,30 @@ import type { TicketStats } from '../types/ticket';
 import { useNavigate } from 'react-router';
 
 export function Dashboard() {
+  let tickets = mockTickets; // Use mock data for now
+ 
+  /* some mocked ticket getter logic
+    const getTickets = async () => {
+    try {
+      const response = await getTicketApi; // Replace with actual API endpoint from ticket service
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      tickets = await response.json();
+    } catch (error) {
+      console.error('Failed to fetch tickets:', error);
+    }
+    
+    useEffect(() => {
+    getTickets();
+    }, []);
+  */
   // Calculate ticket statistics from mock data
   const ticketStats: TicketStats = useMemo(() => {
-    const stats = mockTickets.reduce(
+    const stats = tickets.reduce(
       (acc, ticket) => {
         acc.total += 1;
-        
+
         switch (ticket.status) {
           case 'open':
             acc.open += 1;
@@ -34,22 +52,22 @@ export function Dashboard() {
             acc.cancelled += 1;
             break;
         }
-        
+
         return acc;
       },
-      { 
-        total: 0, 
-        open: 0, 
-        inProgress: 0, 
-        underReview: 0, 
-        resolved: 0, 
-        closed: 0, 
-        cancelled: 0, 
-        overdue: 0, 
-        dueSoon: 0 
+      {
+        total: 0,
+        open: 0,
+        inProgress: 0,
+        underReview: 0,
+        resolved: 0,
+        closed: 0,
+        cancelled: 0,
+        overdue: 0,
+        dueSoon: 0
       }
     );
-    
+
     return stats;
   }, []);
   const navigate = useNavigate();
@@ -63,14 +81,14 @@ export function Dashboard() {
 
   const filteredTickets = useMemo(() => {
     if (!activeFilter) {
-      return mockTickets; // Show all tickets when no filter is active
+      return tickets; // Show all tickets when no filter is active
     }
-    
-    return mockTickets.filter(ticket => ticket.status === activeFilter);
-  }, [activeFilter]);
-  
 
-    const handleFilterChange = (filter: string | null) => {
+    return tickets.filter(ticket => ticket.status === activeFilter);
+  }, [activeFilter]);
+
+
+  const handleFilterChange = (filter: string | null) => {
     setActiveFilter(filter);
   };
 
@@ -102,11 +120,11 @@ export function Dashboard() {
       {/* Main Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats Overview */}
-        <StatsOverview stats={ticketStats} activeFilter={activeFilter} onFilterChange={handleFilterChange}/>
-        
+        <StatsOverview stats={ticketStats} activeFilter={activeFilter} onFilterChange={handleFilterChange} />
+
         {/* Ticket List */}
-        <TicketList 
-          tickets={filteredTickets} 
+        <TicketList
+          tickets={filteredTickets}
           onTicketClick={handleTicketClick}
         />
       </div>
