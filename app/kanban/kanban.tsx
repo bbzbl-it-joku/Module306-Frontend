@@ -9,19 +9,19 @@ import { ticketService } from '~/api/ticketService';
 
 const STATUS_COLORS = {
     [TicketStatus.OPEN]: {
-        bg: 'bg-orange-100',
+        bg: 'bg-orange-300',
         text: 'text-orange-700',
-        border: 'border-orange-300'
+        border: 'border-orange-400'
     },
     [TicketStatus.IN_PROGRESS]: {
-        bg: 'bg-yellow-100',
+        bg: 'bg-yellow-200',
         text: 'text-yellow-700',
-        border: 'border-yellow-300'
+        border: 'border-yellow-400'
     },
     [TicketStatus.UNDER_REVIEW]: {
-        bg: 'bg-purple-100',
+        bg: 'bg-purple-300',
         text: 'text-purple-700',
-        border: 'border-purple-300'
+        border: 'border-purple-400'
     },
     [TicketStatus.RESOLVED]: {
         bg: 'bg-blue-100',
@@ -29,9 +29,9 @@ const STATUS_COLORS = {
         border: 'border-blue-300'
     },
     [TicketStatus.CLOSED]: {
-        bg: 'bg-green-100',
+        bg: 'bg-green-300',
         text: 'text-green-700',
-        border: 'border-green-300'
+        border: 'border-green-400'
     },
     [TicketStatus.CANCELLED]: {
         bg: 'bg-gray-100',
