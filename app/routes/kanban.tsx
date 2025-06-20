@@ -3,7 +3,7 @@ import KanbanBoard from "../kanban/kanban";
 
 export function meta() {
   return [
-    { title: "Trackify  " },
+    { title: "Kanabn - Trackify  " },
     { name: "description", content: "Kanban board!" },
   ];
 }

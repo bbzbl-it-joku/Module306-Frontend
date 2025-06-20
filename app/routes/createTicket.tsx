@@ -3,7 +3,7 @@ import CreateTicket from '~/detailTicket/createTicket';
 
 export function meta() {
   return [
-    { title: "Trackify  " },
+    { title: "Create Ticket - Trackify  " },
     { name: "description", content: "Create a ticket!" },
   ];
 }
