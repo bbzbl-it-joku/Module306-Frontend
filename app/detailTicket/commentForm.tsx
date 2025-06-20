@@ -72,8 +72,8 @@ export function CommentForm({ onSubmit, placeholder = "Add a comment...", ticket
       <div className="flex space-x-4">
         <div className="flex-shrink-0 pt-2">
           <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-blue-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
-            U
-          </div>
+            C
+          </div>{/* adjust to actual function t use username/id */}
         </div>
 
         <div className="flex-1">
