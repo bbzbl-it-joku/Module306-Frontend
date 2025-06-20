@@ -6,9 +6,10 @@ import { mockTickets, STATUS_COLORS, PRIORITY_COLORS } from '../types/ticket';
 import { CommentList } from './commentList';
 import { CommentForm } from './commentForm';
 import { AttachmentList } from './attachmentList';
-import type { Comment, Attachment, AttachmentLinkType } from '~/types';
+import type { Comment, Attachment, AttachmentLinkType, Ticket } from '~/types';
 import { Navigation } from '~/navigation/navigation';
 import type { TicketStatus } from '~/types/common';
+import { ticketService } from '~/api/ticketService';
 // Mock comments data
 const mockComments: Comment[] = [
   {
@@ -60,19 +61,66 @@ export function TicketDetail() {
   const navigate = useNavigate();
   const [comments, setComments] = useState<Comment[]>(mockComments);
 
-  const ticket = useMemo(() => {
-    return mockTickets.find((t: { id: any; }) => t.id === id);
+  const [ticket, setTicket] = useState<Ticket>();
+
+  React.useEffect(() => {
+    // Simulate async fetch
+    const fetchTicket = async () => {
+      try {
+        // const fetchedTicket = await ticketService.getTicketById(id as string);
+        const fetchedTicket = mockTickets.find(t => t.id === id);
+        setTicket(fetchedTicket as Ticket);
+      } catch (error) {
+        console.error('Error fetching ticket:', error);
+      }
+    };
+    fetchTicket();
   }, [id]);
 
-  const [currentStatus, setCurrentStatus] = useState(ticket?.status); // Add this line
+  const [currentStatus, setCurrentStatus] = useState<string | undefined>(undefined);
+
+  React.useEffect(() => {
+    if (ticket) {
+      setCurrentStatus(ticket.status);
+    }
+  }, [ticket]);
+
+  const [ticketComments, setTicketComments] = useState<Comment[]>([]);
+
+  React.useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        // Replace with your actual ticketService call
+        // const fetchedComments = await ticketService.getCommentsByTicketId(id as string);
+        // setTicketComments(fetchedComments);
+        setTicketComments(mockComments.filter(comment => comment.ticketId === id));
+      } catch (error) {
+        console.error('Error fetching comments:', error);
+      }
+    };
+    if (id) {
+      fetchComments();
+    }
+  }, [id]);
 
 
-  const ticketComments = useMemo(() => {
-    return comments.filter(comment => comment.ticketId === id);
-  }, [comments, id]);
 
-  const ticketAttachments = useMemo(() => {
-    return mockAttachments.filter(attachment => attachment.linkId === id);
+  const [ticketAttachments, setTicketAttachments] = useState<Attachment[]>([]);
+
+  React.useEffect(() => {
+    const fetchAttachments = async () => {
+      try {
+        // Replace with your actual ticketService call
+        // const fetchedAttachments = await ticketService.getAttachmentsByTicketId(id as string);
+        // setTicketAttachments(fetchedAttachments);
+        setTicketAttachments(mockAttachments.filter(attachment => attachment.linkId === id));
+      } catch (error) {
+        console.error('Error fetching attachments:', error);
+      }
+    };
+    if (id) {
+      fetchAttachments();
+    }
   }, [id]);
 
   const formatDate = (dateString: string) => {

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import { Navigation } from '~/navigation/navigation';
 import { mockTickets } from '../types/ticket'; // Assuming you have a separate file for mock data
 import { TicketStatus, TicketPriority } from '../types/common'; // Assuming you have a separate file for types
+import { ticketService } from '~/api/ticketService';
 // Mock data and types (based on your existing structure)
 
 
@@ -88,7 +89,7 @@ function KanbanCard({ ticket, onClick }: { ticket: Ticket; onClick?: (id: string
 
     return (
         <div
-              className="group text-gray-50 hover:border-white/80  relative shadow-sm hover:shadow-md border border-white/30 rounded-lg transition-all duration-200  p-4 cursor-pointer overflow-hidden mb-3"
+            className="group text-gray-50 hover:border-white/80  relative shadow-sm hover:shadow-md border border-white/30 rounded-lg transition-all duration-200  p-4 cursor-pointer overflow-hidden mb-3"
 
             onClick={handleCardClick}
         >
@@ -156,17 +157,17 @@ interface KanbanColumnProps {
 function KanbanColumn({ title, tickets, status, onTicketClick }: KanbanColumnProps) {
     const statusColors = STATUS_COLORS[status];
     const [showAll, setShowAll] = useState(false);
-    
+
     // Sort tickets by modified date (newest first)
     const sortedTickets = useMemo(() => {
         return [...tickets].sort((a, b) => {
             return new Date(b.modifiedAt).getTime() - new Date(a.modifiedAt).getTime();
         });
     }, [tickets]);
-    
+
     // Limit tickets to 10 if not showing all
     const displayedTickets = showAll ? sortedTickets : sortedTickets.slice(0, 10);
-    
+
     // Determine if we need a "Show All" button
     const hasMoreTickets = sortedTickets.length > 10;
 
@@ -200,7 +201,7 @@ function KanbanColumn({ title, tickets, status, onTicketClick }: KanbanColumnPro
                                 onClick={onTicketClick}
                             />
                         ))}
-                        
+
                         {/* "Show All" button */}
                         {hasMoreTickets && (
                             <div className="mt-4 text-center">
@@ -525,75 +526,70 @@ export default function KanbanBoard() {
     const navigate = useNavigate();
 
     // Handle ticket click to open modal
-    const handleTicketClick = (ticketId: string) => {
+    const handleTicketClick = async (ticketId: string) => {
 
         navigate(`/ticket/${ticketId}`);
 
-        const ticket = tickets.find(t => t.id === ticketId);
-        if (ticket) {
-            setSelectedTicket(ticket);
-            setIsModalOpen(true);
-        }
-    };
+    }
 
-    // Handle saving ticket changes
-    const handleSaveTicket = (updatedTicket: Ticket) => {
-        const now = new Date().toISOString();
-        const ticketWithTimestamp = {
-            ...updatedTicket,
-            modifiedAt: now,
-            modifiedBy: 'current.user@company.com' // In real app, get from auth context
+        // Handle saving ticket changes
+        const handleSaveTicket = (updatedTicket: Ticket) => {
+            const now = new Date().toISOString();
+            const ticketWithTimestamp = {
+                ...updatedTicket,
+                modifiedAt: now,
+                modifiedBy: 'current.user@company.com' // In real app, get from auth context
+            };
+
+            setTickets(prevTickets =>
+                prevTickets.map(ticket =>
+                    ticket.id === updatedTicket.id ? ticketWithTimestamp : ticket
+                )
+            );
         };
 
-        setTickets(prevTickets =>
-            prevTickets.map(ticket =>
-                ticket.id === updatedTicket.id ? ticketWithTimestamp : ticket
-            )
-        );
-    };
+        // Handle closing modal
+        const handleCloseModal = () => {
+            setIsModalOpen(false);
+            setSelectedTicket(null);
+        };
 
-    // Handle closing modal
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-        setSelectedTicket(null);
-    };
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-800 relative overflow-hidden">
+                {/* Header */}
+                <Navigation currentPath='/kanban' />
+                <div className="relative z-10 pt-20 pb-8 backdrop-blur-md bg-white/5 border-b border-white/10">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="py-6">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <h1 className="text-3xl font-bold text-white-900 ">Kanban Board</h1>
+                                    <p className="mt-2 text-gray-300">
+                                        Manage tickets with a visual workflow
+                                    </p>
+                                </div>
 
-    return (
-        <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-800 relative overflow-hidden">
-            {/* Header */}
-            <Navigation currentPath='/kanban' />
-            <div className="relative z-10 pt-20 pb-8 backdrop-blur-md bg-white/5 border-b border-white/10">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="py-6">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <h1 className="text-3xl font-bold text-white-900 ">Kanban Board</h1>
-                                <p className="mt-2 text-gray-300">
-                                    Manage tickets with a visual workflow
-                                </p>
                             </div>
-
                         </div>
                     </div>
                 </div>
-            </div>
 
-            {/* Kanban Board */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <div className="flex gap-6 overflow-x-auto pb-4">
-                    {columns.map((column) => (
-                        <KanbanColumn
-                            key={column.id}
-                            title={column.title}
-                            tickets={column.tickets}
-                            status={column.status}
-                            onTicketClick={handleTicketClick}
-                        />
-                    ))}
+                {/* Kanban Board */}
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                    <div className="flex gap-6 overflow-x-auto pb-4">
+                        {columns.map((column) => (
+                            <KanbanColumn
+                                key={column.id}
+                                title={column.title}
+                                tickets={column.tickets}
+                                status={column.status}
+                                onTicketClick={handleTicketClick}
+                            />
+                        ))}
+                    </div>
                 </div>
+
+
             </div>
-
-
-        </div>
-    );
-}
+        );
+    }
