@@ -10,6 +10,7 @@ import type { Comment, Attachment, AttachmentLinkType, Ticket } from '~/types';
 import { Navigation } from '~/navigation/navigation';
 import type { TicketStatus } from '~/types/common';
 import { ticketService } from '~/api/ticketService';
+
 // Mock comments data
 const mockComments: Comment[] = [
   {
@@ -134,17 +135,21 @@ export function TicketDetail() {
     }).format(new Date(dateString));
   };
 
-  const handleAddComment = (content: Comment) => {
+  const handleAddComment = async (content: Comment) => {
     if (!id) return;
 
     const newComment: Comment = content;
-
+    // In a real app, add the comment via the ticketService
+    // await ticketService.addCommentToTicket(id, newComment);
+    setTicketComments(prev => [...prev, newComment]);
     setComments(prev => [...prev, newComment]);
   };
 
-  const handleStatusChange = (newStatus: string) => {
+  const handleStatusChange = (newStatus: string ) => {
     setCurrentStatus(newStatus as TicketStatus); // Update local state
     // In real app, this would make an API call
+    if (!id) return;
+   // ticketService.updateTicket(id, { status : newStatus as TicketStatus });
     console.log(`Updating ticket ${id} status to ${newStatus}`);
   };
 
