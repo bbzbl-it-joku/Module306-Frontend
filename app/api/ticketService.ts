@@ -1,5 +1,4 @@
-import type { Ticket } from "../types/ticket";
-import type { Comment } from "../types/comment";
+import type { Ticket, Comment } from "~/types";
 import { api } from "./apiClient";
 
 export const ticketService = {
@@ -14,18 +13,18 @@ export const ticketService = {
         return response.data;
     },
 
-    createTicket: async (ticketData: Omit<Ticket, "id">) => {
-        const response = await api.post<Ticket>("/ticket", ticketData);
+    createTicket: async (ticketData: Omit<Ticket, "id">, attachments?: FileList) => {
+        const response = await api.post<Ticket>("/ticket", { ticket: ticketData, files: attachments ?? [] }, { headers: { "Content-Type": "multipart/form-data" } });
         return response.data;
     },
 
-    updateTicket: async (ticketId: string, ticketData: Partial<Ticket>) => {
-        const response = await api.put<Ticket>(`/ticket/${ticketId}`, ticketData);
+    updateTicket: async (ticketId: string, ticketData: Partial<Ticket>, attachments?: FileList) => {
+        const response = await api.put<Ticket>(`/ticket/${ticketId}`, { ticket: ticketData, files: attachments ?? [] }, { headers: { "Content-Type": "multipart/form-data" } });
         return response.data;
     },
 
-    addCommentToTicket: async (ticketId: string, commentData: Omit<Comment, "id" | "createdAt">) => {
-        const response = await api.post<Comment>(`/comment/${ticketId}`, commentData);
+    addCommentToTicket: async (ticketId: string, commentData: Omit<Comment, "id" | "createdAt">, attachments?: FileList) => {
+        const response = await api.post<Comment>(`/comment/${ticketId}`, { comment: commentData, files: attachments ?? [] }, { headers: { "Content-Type": "multipart/form-data" } });
         return response.data;
     },
 
@@ -35,13 +34,13 @@ export const ticketService = {
     },
 
 
-    updateComment: async (ticketId: string, commentData: Partial<Comment>) => {
-        const response = await api.put<Comment>(`/comment/${ticketId}`, commentData);
+    updateComment: async (ticketId: string, commentData: Partial<Comment>, attachments?: FileList) => {
+        const response = await api.put<Comment>(`/comment/${ticketId}`, { comment: commentData, files: attachments ?? [] }, { headers: { "Content-Type": "multipart/form-data" } });
         return response.data;
     },
 
     getAttachment : async (attachmentId: string, type: string, fileName: string, mimeType: string) => {
-        const response = await api.get(`/attachment/${type}/${attachmentId}/${fileName}`)
+        const response = await api.get(`/attachment/${type}/${attachmentId}/${fileName}?mimeType=${mimeType}`)
         return response.data;
     }
 };
