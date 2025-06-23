@@ -25,7 +25,7 @@ export const ticketService = {
     },
 
     addCommentToTicket: async (ticketId: string, commentData: Omit<Comment, "id" | "createdAt">) => {
-        const response = await api.post<Comment>(`/comment/`, commentData);
+        const response = await api.post<Comment>(`/comment/${ticketId}`, commentData);
         return response.data;
     },
 
@@ -35,8 +35,8 @@ export const ticketService = {
     },
 
 
-    updateComment: async (commentId: string, commentData: Partial<Comment>) => {
-        const response = await api.put<Comment>(`/comment/${commentId}`, commentData);
+    updateComment: async (ticketId: string, commentData: Partial<Comment>) => {
+        const response = await api.put<Comment>(`/comment/${ticketId}`, commentData);
         return response.data;
     },
 
