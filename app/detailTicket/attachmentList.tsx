@@ -64,12 +64,6 @@ export function AttachmentList({ attachments, onAddAttachment, onRemoveAttachmen
     return url.split('/').pop() || 'Unknown file';
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const getFileSize = (url: string) => {
-    // In a real app, this would come from the attachment metadata
-    // For now, return a mock size
-    return '2.4 MB';
-  };
 
   const handleDownload = (attachment: Attachment) => {
     // In a real app, this would handle the download
@@ -139,9 +133,6 @@ export function AttachmentList({ attachments, onAddAttachment, onRemoveAttachmen
           <div className="flex-1 min-w-0 ">
             <div className="text-sm font-medium text-gray-90 truncate">
               {getFileName(attachment.url)}
-            </div>
-            <div className="text-xs text-gray-500 truncate">
-              {getFileSize(attachment.url)} • {attachment.mimeType}
             </div>
           </div>
           
