@@ -1,5 +1,5 @@
 // components/ticket/AttachmentList.tsx
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import type { Attachment } from '../types/attachment';
 
 interface AttachmentListProps {

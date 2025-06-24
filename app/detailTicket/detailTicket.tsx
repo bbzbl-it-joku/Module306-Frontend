@@ -70,6 +70,7 @@ export function TicketDetail() {
       try {
         // const fetchedTicket = await ticketService.getTicketById(id as string);
         const fetchedTicket = mockTickets.find(t => t.id === id);
+        console.log('Fetched ticket:', fetchedTicket);
         setTicket(fetchedTicket as Ticket);
       } catch (error) {
         console.error('Error fetching ticket:', error);
@@ -95,6 +96,7 @@ export function TicketDetail() {
         // const fetchedComments = await ticketService.getCommentsByTicketId(id as string);
         // setTicketComments(fetchedComments);
         setTicketComments(mockComments.filter(comment => comment.ticketId === id));
+        console.log('Fetched comments:', mockComments.filter(comment => comment.ticketId === id));
       } catch (error) {
         console.error('Error fetching comments:', error);
       }
@@ -115,6 +117,7 @@ export function TicketDetail() {
         // const fetchedAttachments = await ticketService.getAttachmentsByTicketId(id as string);
         // setTicketAttachments(fetchedAttachments);
         setTicketAttachments(mockAttachments.filter(attachment => attachment.linkId === id));
+        console.log('Fetched attachments:', mockAttachments.filter(attachment => attachment.linkId === id));
       } catch (error) {
         console.error('Error fetching attachments:', error);
       }
@@ -151,6 +154,35 @@ export function TicketDetail() {
     if (!id) return;
    // ticketService.updateTicket(id, { status : newStatus as TicketStatus });
     console.log(`Updating ticket ${id} status to ${newStatus}`);
+  };
+
+  const onAddAttachment = async (file: File) => {
+    if (!id) return;
+
+    const newAttachment: Attachment = {
+      id: `attachment-${Date.now()}`, // Generate a unique ID
+      linkType: 'ticket' as AttachmentLinkType, 
+      linkId: id,
+      url: URL.createObjectURL(file), // Use a temporary URL for local preview
+      mimeType: file.type
+    };
+    // In a real app, upload the file and get the URL
+    // await ticketService.addAttachmentToTicket(id, newAttachment);
+    setTicketAttachments(prev => [...prev, newAttachment]);
+    console.log('Added attachment:', newAttachment);
+    // Reset the file input
+    // if (fileInputRef.current) {
+    //   fileInputRef.current.value = '';
+    // }
+  }
+
+  const onRemoveAttachment = async (id: string) => {
+    if (!id) return;
+
+    // In a real app, remove the attachment via the ticketService
+    // await ticketService.removeAttachmentFromTicket(id, attachmentId);
+    setTicketAttachments(prev => prev.filter(attachment => attachment.id !== id));
+    console.log(`Removed attachment with ID: ${id}`);
   };
 
   if (!ticket) {
@@ -323,7 +355,7 @@ export function TicketDetail() {
               <h3 className="text-lg font-semibold text-gray-90 mb-4">
                 Attachments ({ticketAttachments.length})
               </h3>
-              <AttachmentList attachments={ticketAttachments} />
+              <AttachmentList attachments={ticketAttachments} onAddAttachment={onAddAttachment} onRemoveAttachment={onRemoveAttachment} />
             </div>
           </div>
         </div>

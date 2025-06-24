@@ -152,7 +152,10 @@ const validateForm = (formData: FormData): FormErrors => {
     errors.description = 'Description is required';
   } else if (formData.description.length < 10) {
     errors.description = 'Description must be at least 10 characters';
+  } else if (formData.description.length > 1000) {
+    errors.description = 'Description cannot exceed 1000 characters';
   }
+  
 
   if (formData.assignedTo && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.assignedTo)) {
     errors.assignedTo = 'Please enter a valid email address';
@@ -363,10 +366,11 @@ export default function CreateTicket({ isModal = false, onSubmit, onCancel }: Cr
       const validFiles = attachedFiles.filter(f => !f.error).map(f => f.file);
 
       // Call parent submit handler with ticket and files
-      if (onSubmit) {
-        await onSubmit(newTicket, validFiles);
         console.log('Creating ticket:', newTicket, 'with files:', validFiles);
-      } // actaul submission logic would go here, e.g. API call
+        if (onSubmit) {
+          onSubmit(newTicket, validFiles);
+        }
+       // actaul submission logic would go here, e.g. API call
 
       navigate(-1)
       // Reset form on success
